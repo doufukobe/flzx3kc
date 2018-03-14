@@ -1,0 +1,24 @@
+<!--pages/single-detail/single-detail.wxml-->
+<view class="container">
+  <view class="img-wrapper">
+    <view class="level-prompt">第 {{index}} 关</view>
+    <image src="{{idiomBgSrc}}" class="bg-img"></image>
+    <image src="{{idiomSrc}}" class="idiom-img"></image>
+  </view>
+  <view class="operation-wrapper">
+    <view class="operation-item operation-prompt">提示30</view>
+    <view class="operation-item operation-help">免費求助</view>
+    <view class="operation-item operation-skip">跳過</view>
+  </view>
+  <view class="idiom-input-fields">
+    <view class="idiom-character" wx:for="{{inputIdiom}}">{{item}}</view>
+  </view>
+  <view class="character-selection">
+    <view wx:for="{{selectChars}}" class="character-item">
+      <view class="character-content">
+        {{item}}
+      </view>
+    </view>
+  </view>
+  <image class="fixed-download-bg" src="{{downloadBgSrc}}"></image>
+</view>

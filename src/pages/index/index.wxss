@@ -1,0 +1,36 @@
+/**index.wxss**/
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container .bg {
+  width: 100%;
+  height: 692rpx;
+}
+
+.container .mode-list {
+  flex: 1;
+}
+
+ .container .mode-item {
+   width: 480rpx;
+   height: 108rpx;
+   line-height: 108rpx;
+   margin-bottom: 40rpx;
+   border-radius: 200rpx;
+   text-align: center;
+   color: #fff;
+ }
+
+ .mode-single,
+ .mode-pk {
+   background-color: #090909;
+ }
+
+ .mode-rank {
+   background-color: #997A56;
+ }
+  
