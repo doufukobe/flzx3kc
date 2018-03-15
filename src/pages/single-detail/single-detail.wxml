@@ -6,19 +6,38 @@
     <image src="{{idiomSrc}}" class="idiom-img"></image>
   </view>
   <view class="operation-wrapper">
-    <view class="operation-item operation-prompt">提示30</view>
-    <view class="operation-item operation-help">免費求助</view>
+    <view class="operation-item operation-prompt" bindtap="toastSuccess">提示30</view>
+    <view class="operation-item operation-help" bindtap="toastError">免費求助</view>
     <view class="operation-item operation-skip">跳過</view>
   </view>
   <view class="idiom-input-fields">
     <view class="idiom-character" wx:for="{{inputIdiom}}">{{item}}</view>
   </view>
-  <view class="character-selection">
+  <view class="character-selection" bindtap="handleTap">
     <view wx:for="{{selectChars}}" class="character-item">
-      <view class="character-content">
+      <view class="character-content" data-index="{{index}}">
         {{item}}
       </view>
     </view>
   </view>
   <image class="fixed-download-bg" src="{{downloadBgSrc}}"></image>
+  <view class="success-modal" wx:if="{{isSuccess}}">
+    <view class="modal-body">
+      <view class="modal-icon"></view>
+      <view class="modal-title">夸父追日</view>
+      <view class="modal-content">
+        夸父与太阳竞跑，一直追赶到太阳落下的地方；他感到口渴，想要喝水，就到黄河、渭水喝水。
+      </view>
+      <view class="modal-award">
+        金币+10
+      </view>
+      <view class="modal-button" bindtap="toastSuccess">
+        下一题
+      </view>
+    </view>
+  </view>
+  <view class="toast" wx:if="{{isError}}">
+     <view class="toast-icon"></view> 
+    <view class="toast-content">{{errorMsg}}</view>
+  </view>
 </view>
