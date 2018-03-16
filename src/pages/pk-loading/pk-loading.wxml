@@ -1,0 +1,35 @@
+<!--pages/pk-loading/pk-loading.wxml-->
+<view class="container">
+  <!-- wxss 不支持加载本地资源，暂时 image 代替 -->
+  <image src="../../images/pk-loading/bg.png" class="bg"></image>
+  <view class="pk-header" wx:if="{{!isMatched}}">
+    <view class="title">正在匹配</view>
+    <view class="passed-time">已等待{{passedTime}}秒</view>
+  </view>
+  <view wx:else class="pk-header">
+    <view class="title">匹配成功
+      <image src="../../images/pk-loading/shine-star-left.png" class="shine-star shine-star-left"></image>
+      <image src="../../images/pk-loading/shine-star-right.png" class="shine-star shine-star-right"></image>
+    </view>
+    <view class="passed-time"></view>
+  </view>
+  <view class="pk-card">
+    <view class="pk-card-title">成语对决</view>
+    <image class="pk-card-bg" src="../../images/pk-loading/pk-card-bg.png"></image>
+    <view class="pk-card-content">
+      <view class="pk-user">
+         <image src="{{currentUser.avatar}}" class="current-user"></image> 
+        <view class="pk-user-name">{{currentUser.name}}</view>
+        <view class="pk-user-record">战绩{{currentUser.record}}胜</view>
+      </view>
+      <view class="pk-title">VS</view>
+      <view class="pk-user">
+         <image src="{{opponent.avatar}}" class="opponent-user"></image> 
+        <view class="pk-user-name">{{opponent.name}}</view>
+        <view class="pk-user-record">战绩{{opponent.record}}胜</view>
+      </view>
+    </view>
+  </view>
+  <view class="pk-rule">中途退出游戏将自动人数</view>
+  <image class="bottom-guide" src="../../images/pk-loading/bottom-guide.png"></image>
+</view>

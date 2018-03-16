@@ -11,4 +11,5 @@
 
 view {
   font-family: STSongti-TC-Bold;
+  font-weight: 100;
 }

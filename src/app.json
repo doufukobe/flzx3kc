@@ -4,6 +4,7 @@
     "pages/single/single",
     "pages/single-detail/single-detail",
     "pages/pk/pk",
+    "pages/pk-loading/pk-loading",    
     "pages/rank/rank",
     "pages/logs/logs"
   ],

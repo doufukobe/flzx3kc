@@ -13,7 +13,7 @@
   <image src="{{logoSrc}}" class="bg"></image>
   <view class="mode-list">
     <view class="mode-item mode-single" bindtap="goTo" data-type="single">闯关模式</view>
-    <view class="mode-item mode-pk"  bindtap="goTo" data-type="pk">PK 模式</view>
+    <view class="mode-item mode-pk"  bindtap="goTo" data-type="pk-loading">PK 模式</view>
     <view class="mode-item mode-rank"  bindtap="goTo" data-type="rank">排行榜</view>  
   </view>
 
