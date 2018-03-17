@@ -1,1 +1,125 @@
 /* pages/pk/pk.wxss */
+
+@import "../../common/character.wxss";
+
+.pk-header {
+  margin: 0 34rpx;
+  position: relative;
+  height: 120rpx;
+}
+
+.pk-header .pk-user {
+  position: absolute;
+  height: 120rpx;
+  width: 50%;
+}
+
+.pk-header .avatar {
+  width: 108rpx;
+  height: 108rpx;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+}
+
+.pk-header .score {
+  width: 100rpx;
+  font-size: 48rpx;
+  color: #231916;
+}
+
+.pk-header .unit {
+  font-size: 24rpx;
+  color: #231916;
+  position: relative;
+  top: -6rpx;
+}
+
+.pk-header .user-name {
+  z-index: 0;
+  position: absolute;
+  bottom: 0;
+  height: 34rpx;
+  line-height: 34rpx;
+  font-size: 20rpx;
+  color: #fff;
+}
+
+/* 当前用户 */
+.pk-header .current-user {
+  left: 0;
+  text-align: left;
+}
+
+.pk-header .current-user .score {
+  position: absolute;
+  left: 140rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.pk-header .current-user .avatar {
+  border: 8rpx #1c3e7e solid;
+}
+
+.pk-header .current-user .user-name {
+  left: 60rpx;
+  right: 0;
+  background-color: #1c3e7e;
+  padding-left: 60rpx;
+}
+
+/* 当前对手 */
+.pk-header .opponent-user {
+  right: 0;
+  text-align: right;
+}
+
+.pk-header .opponent-user .avatar {
+  border: 8rpx #d32d22 solid;
+}
+
+.pk-header .opponent-user .score {
+  position: absolute;
+  right: 140rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.pk-header .opponent-user .user-name {
+  right: 60rpx;
+  left: 0;
+  background-color: #d32d22;
+  padding-right: 60rpx;
+}
+
+.pk-header .pk-title {
+  position:absolute;
+  top:  50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 52rpx;
+  color: #231916;
+}
+
+/* 选词部分 */
+.character-selection.pk-content {
+  margin: 40rpx 25rpx;
+}
+
+/* pk 提示 */
+.pk-prompt {
+  margin: 0 auto;
+  font-size: 28rpx;
+  color: #231916;
+  text-align: center;
+}
+
+/* 底部图片 */
+.bottom-bg {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 185rpx;
+  width: 100%;
+}

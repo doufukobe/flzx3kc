@@ -10,6 +10,6 @@
 }  */
 
 view {
-  font-family: STSongti-TC-Bold;
+  font-family: "Songti TC", "STSongti-TC-Bold";
   font-weight: 100;
 }

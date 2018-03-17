@@ -28,10 +28,10 @@
 			"current": 2,
 			"list": [
 				{
-					"id": -1,
+					"id": 0,
 					"name": "闯关详情",
 					"pathName": "pages/single-detail/single-detail",
-					"query": "index=10"
+					"query": "index=5"
 				},
 				{
 					"id": 1,

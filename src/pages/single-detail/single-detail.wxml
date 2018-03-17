@@ -3,19 +3,20 @@
   <view class="img-wrapper">
     <view class="level-prompt">第 {{index}} 关</view>
     <image src="{{idiomBgSrc}}" class="bg-img"></image>
-    <image src="{{idiomSrc}}" class="idiom-img"></image>
+    <image src="{{idiomDetail.picture_url}}" class="idiom-img"></image>
   </view>
   <view class="operation-wrapper">
-    <view class="operation-item operation-prompt" bindtap="toastSuccess">提示30</view>
+    <view class="operation-item operation-prompt" bindtap="prompt">提示30</view>
     <view class="operation-item operation-help" bindtap="toastError">免費求助</view>
-    <view class="operation-item operation-skip">跳過</view>
+    <view class="operation-item operation-skip" bindtap="skip">跳過</view>
   </view>
-  <view class="idiom-input-fields">
-    <view class="idiom-character" wx:for="{{inputIdiom}}">{{item}}</view>
+  <view class="idiom-input-fields" bindtap="handleDelete">
+    <view class="idiom-character" wx:for="{{inputIdiom}}" data-index="{{index}}">{{item}}</view>
   </view>
   <view class="character-selection" bindtap="handleTap">
-    <view wx:for="{{selectChars}}" class="character-item">
-      <view class="character-content" data-index="{{index}}">
+    <view wx:for="{{idiomDetail.words}}" class="character-item">
+      <!-- 此处 indexOf includes 不生效 -->
+      <view class="character-content {{(hideIndex[0] === index || hideIndex[1] === index || hideIndex[2] === index || hideIndex[3] === index) ? 'disabled' : ''}}" data-index="{{index}}">
         {{item}}
       </view>
     </view>
@@ -24,14 +25,14 @@
   <view class="success-modal" wx:if="{{isSuccess}}">
     <view class="modal-body">
       <view class="modal-icon"></view>
-      <view class="modal-title">夸父追日</view>
+      <view class="modal-title">{{idiomDetail.answer}}</view>
       <view class="modal-content">
-        夸父与太阳竞跑，一直追赶到太阳落下的地方；他感到口渴，想要喝水，就到黄河、渭水喝水。
+        {{idiomDetail.explanation}}
       </view>
       <view class="modal-award">
         金币+10
       </view>
-      <view class="modal-button" bindtap="toastSuccess">
+      <view class="modal-button" bindtap="goToNext">
         下一题
       </view>
     </view>

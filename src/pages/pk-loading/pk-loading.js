@@ -18,7 +18,6 @@ Page({
       avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
     }
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
