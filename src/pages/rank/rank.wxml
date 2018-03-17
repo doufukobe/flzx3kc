@@ -1,2 +1,48 @@
 <!--pages/rank/rank.wxml-->
-<text>pages/rank/rank.wxml</text>
+<view class="container">
+  <view class="img-wrapper">
+    <image src="{{bannerSrc}}" class="bg"></image>
+    <image src="{{championSrc}}" class="champion"></image>
+    <view class="rank-top-bg"></view>
+    <view class="toprank-wrapper">
+      <image src="{{topThreeSrc}}" class="top-three-bg"></image>
+      <view class = "top-three-rank" style="flex-direction:row;">
+        <view class= "top-three-user">
+          <image class="top-three-avatar" src="{{fisrtAvatarUrl}}"></image>
+          <view class="top-three-name">{{fisrtName}}</view>
+          <view class="top-three-score">{{fisrtScore}}</view>
+        </view>
+        <view class= "top-three-user">
+          <image class="top-three-avatar" src="{{secondAvatarUrl}}"></image>
+          <view class="top-three-name">{{fisrtName}}</view>
+          <view class="top-three-score">{{fisrtScore}}</view>
+        </view>
+        <view class= "top-three-user">
+           <image class="top-three-avatar" src="{{thirdAvatarUrl}}"></image>
+           <view class="top-three-name">{{fisrtName}}</view>
+           <view class="top-three-score">{{fisrtScore}}</view>
+        </view>
+      </view>
+      <view class="mine-wrapper" style="flex-direction:row;">
+        <view class="mine-rank">{{mineRank}}</view>
+        <image class="mine-avatar" src="{{thirdAvatarUrl}}"></image>
+        <view class="mine-score-wrapper">
+          <view class="mine-name">{{mineName}}</view>
+          <view class="mine-score">{{mineScore}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="rank-wrapper">
+    <view wx:for="{{userList}}" wx:for-item="item" class="user-item-wrapper" style="flex-direction:row;">
+      <view class="rank-index">{{item.rank}}</view>
+      <view class="rank-score">{{item.score}}</view>
+      <view class="rank-name">{{item.name}}</view>
+      <image class="rank-avatar" src="{{item.avatar}}"></image>
+    </view>
+    <view class="share-wrapper">
+      <button class="share-btn" open-type="share">{{share}}</button>
+    </view>
+  </view>
+</view>
+
