@@ -1,0 +1,25 @@
+<!--pages/pk-loading/pk-loading.wxml-->
+<view class="container">
+  <image src="../../images/pk-loading/bg.png" class="bg"></image>
+  <view class="{{isWin ? 'result-content-wrapper-win' : 'result-content-wrapper-lose'}}" style="flex-direction:column;">
+    <view class="win-tip" wx:if="{{isWin}}">{{winTip}}</view>
+    <view class="{{isWin ? 'pk-content-wrapper-win' : 'pk-content-wrapper-lose'}}" style="flex-direction:row;">
+      <view class="pk-user-wrapper" style="flex-direction:column;">
+        <image src="{{currentUser.avatar}}" class="pk-avatar"></image>
+        <view class="user-name">{{currentUser.name}}</view>
+        <view class="user-score">{{currentUser.score}}</view>
+      </view>
+      <view class="pk-tip">{{pkTip}}</view>
+      <view class="pk-user-wrapper" style="flex-direction:column;">
+        <image src="{{opponent.avatar}}" class="pk-avatar"></image>
+        <view class="user-name">{{opponent.name}}</view>
+        <view class="user-score">{{opponent.score}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="result-header {{isWin ? 'result-header-size-win' : 'result-header-size-lose'}}">
+    <image class="result-header-bg {{isWin ? 'win' : 'lose'}}"></image>
+    <image src="{{currentUser.avatar}}" class="{{isWin ? 'result-header-avatar-win' : 'result-header-avatar-lose'}}"></image> 
+  </view>
+  <view class="result-next-game">{{nextGame}}</view>
+</view>

@@ -10,7 +10,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "1.9.91",
 	"appid": "touristappid",
-	"projectname": "flzx3kc",
+	"projectname": "doufukobeflzx3kc",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -25,7 +25,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
@@ -38,6 +38,23 @@
 					"name": "pk-loading",
 					"pathName": "pages/pk-loading/pk-loading",
 					"query": "index=10"
+				},
+				{
+					"id": -1,
+					"name": "榜单",
+					"pathName": "pages/rank/rank",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "榜单",
+					"pathName": "pages/pk/pk",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "榜单",
+					"pathName": "pages/pk-result/pk-result"
 				}
 			]
 		}
