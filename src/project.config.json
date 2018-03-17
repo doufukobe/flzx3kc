@@ -68,6 +68,12 @@
 					"name": "over",
 					"pathName": "pages/pk-result/pk-result",
 					"query": ""
+        },
+				{
+					"id": -1,
+					"name": "pk",
+					"pathName": "pages/pk/pk",
+					"query": "index=5"
 				}
 			]
 		}

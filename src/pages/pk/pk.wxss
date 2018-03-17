@@ -104,7 +104,7 @@
 
 /* 选词部分 */
 .character-selection.pk-content {
-  margin: 40rpx 25rpx;
+  margin: 20rpx 25rpx 40rpx;
 }
 
 /* pk 提示 */
@@ -122,4 +122,34 @@
   left: 0;
   height: 185rpx;
   width: 100%;
+}
+
+/* 倒计时 */
+.left-seconds {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450rpx;
+  height: 450rpx;
+  /* transform: scale(1.5); */
+}
+
+/* 游戏剩余时间 */
+.pk-time {
+  height: 4rpx;
+  background: #F6F3EF;
+  border-radius: 200rpx;
+  margin: 16rpx 30rpx 0;
+  position: relative;
+}
+
+.pk-time-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #E1D7CC;  
+  transition: width linear 1s;
 }

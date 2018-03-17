@@ -13,21 +13,20 @@
       <view class="user-name">{{opponent.name}}</view>
     </view>
   </view>
-  <swiper duration="0" style="height: 900rpx;">
-    <swiper-item>
-    <view class="character-selection pk-content" bindtouchmove="handleTouchMove" bindtouchstart="handleTouchStart">
-      <view wx:for="{{idiomCharList}}" class="character-item" data-index="{{index}}">
-        <view class="character-content {{(currentSelect[0] === index || currentSelect[1] === index || currentSelect[2] === index || currentSelect[3] === index) ? 'select' : ''}} {{item.isFadeOut ? 'fade-out' : ''}}" data-index="{{index}}">
-          {{item.char}}
-        </view>
-      </view>
+  <view class="pk-time">
+   <view class="pk-time-left" style="width: {{leftTimePercentage}}"></view>
   </view>
-    </swiper-item>
-  
-  </swiper>
-  
+  <view class="character-selection pk-content" bindtouchmove="handleTouchMove" bindtouchstart="handleTouchStart">
+    <view wx:for="{{idiomCharList}}" class="character-item" data-index="{{index}}">
+      <view class="character-content {{(currentSelect[0] === index || currentSelect[1] === index || currentSelect[2] === index || currentSelect[3] === index) ? 'select' : ''}} {{item.isFadeOut ? 'fade-out' : ''}}" data-index="{{index}}">
+        {{item.char}}
+      </view>
+    </view>
+  </view>
+    
   <view class="pk-prompt">
-    找到成语 并用手指将其连续划出{{currentIndex}}
+    找到成语 并用手指连续点击
   </view>
   <image src="../../images/pk/pk_down_bg.png" class="bottom-bg"></image>
+  <image class="left-seconds" wx:if="{{!isBegin}}" src="{{leftSecondSrc}}"></image>
 </view>

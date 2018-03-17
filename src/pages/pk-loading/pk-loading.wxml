@@ -30,6 +30,6 @@
       </view>
     </view>
   </view>
-  <view class="pk-rule">中途退出游戏将自动人数</view>
+  <view class="pk-rule">找到成语 并用手指将其连续<text class="text-red">“点”</text>出</view>
   <image class="bottom-guide" src="../../images/pk-loading/bottom-guide.png"></image>
 </view>

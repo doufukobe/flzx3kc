@@ -38,6 +38,9 @@ Page({
     currentSelectPoints: [],
     screenWidth: 375,
     fadeOutChars: [0, 10, 11],
+    leftSecondSrc: '../../images/pk/3.png',
+    isBegin: false,
+    leftTimePercentage: '100%',
   },
 
   // 事件处理函数
@@ -144,7 +147,35 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+    let left = 2;
+    let leftTimer;
+    let timer = setInterval(() => {
+      if (left > 0) {
+        this.setData({
+          leftSecondSrc: `../../images/pk/${left}.png`,
+        });
+      }
+
+      if (left === 0) {
+        this.setData({
+          isBegin: true,
+        });
+        clearInterval(timer);
+
+        leftTimer = setInterval(() => {
+          const number = parseInt(this.data.leftTimePercentage.slice(0, -1), 10);
+          const d = number - 1.67;
+          if (d <= 0) {
+            clearInterval(leftTimer);
+          } else {
+            this.setData({
+              leftTimePercentage: d + '%'
+            });
+          }
+        }, 1000);
+      }
+      left -= 1;
+    }, 1000);
   },
 
   /**
