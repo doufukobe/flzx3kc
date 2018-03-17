@@ -1,0 +1,1 @@
+var buildType = "app"; var ip = "10.2.195.148"; var url = "%7B%22id%22%3A%22touristappid4%22%2C%22name%22%3A%22flzx3kc%22%2C%22icon%22%3A%22http%3A%2F%2F10.2.195.148%3A18242%2Ficon.png%22%2C%22version%22%3A71%2C%22url%22%3A%22http%3A%2F%2F10.2.195.148%3A18242%2F__dist__.zip%22%7D";

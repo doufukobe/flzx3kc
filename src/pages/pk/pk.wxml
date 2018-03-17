@@ -1,2 +1,33 @@
 <!--pages/pk/pk.wxml-->
-<text>pages/pk/pk.wxml</text>
+<view class="container">
+  <view class="pk-header">
+    <view class="pk-user current-user">
+      <image src="{{currentUser.avatar}}" class="avatar"></image>
+      <view class="score">{{currentUser.score}}<text class="unit">分</text></view>
+      <view class="user-name">{{currentUser.name}}</view>
+    </view>
+    <view class="pk-title">VS</view>
+    <view class="pk-user opponent-user">
+      <image src="{{opponent.avatar}}" class="avatar"></image>
+      <view class="score">{{opponent.score}}<text class="unit">分</text></view>
+      <view class="user-name">{{opponent.name}}</view>
+    </view>
+  </view>
+  <swiper duration="0" style="height: 900rpx;">
+    <swiper-item>
+    <view class="character-selection pk-content" bindtouchmove="handleTouchMove" bindtouchstart="handleTouchStart">
+      <view wx:for="{{idiomCharList}}" class="character-item" data-index="{{index}}">
+        <view class="character-content {{(currentSelect[0] === index || currentSelect[1] === index || currentSelect[2] === index || currentSelect[3] === index) ? 'select' : ''}} {{item.isFadeOut ? 'fade-out' : ''}}" data-index="{{index}}">
+          {{item.char}}
+        </view>
+      </view>
+  </view>
+    </swiper-item>
+  
+  </swiper>
+  
+  <view class="pk-prompt">
+    找到成语 并用手指将其连续划出{{currentIndex}}
+  </view>
+  <image src="../../images/pk/pk_down_bg.png" class="bottom-bg"></image>
+</view>

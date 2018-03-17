@@ -1,9 +1,9 @@
 <!--pages/single/single.wxml-->
 <view class="container">
   <view wx:for="{{idiomList}}" class="idiom-item-wrapper" bindtap="goTo">
-    <view class="idiom-item {{item < currentProgress ? 'passed' : (item === currentProgress ? 'current' : 'disabled')}}"
-    data-index="{{item}}">
-      {{item}}
+    <view class="idiom-item {{index + 1 < idiomInfo.next_level ? 'passed' : (index + 1 === idiomInfo.next_level ? 'current' : 'disabled')}}"
+    data-index="{{index + 1}}">
+      {{index + 1}}
     </view>
   </view>
 </view>
