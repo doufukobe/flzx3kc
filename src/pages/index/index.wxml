@@ -21,6 +21,8 @@
         </view>
       </view>
       <view class="take-attendance">{{takeAttendance}}</view>
+      <!-- <view class="log">{{log}}</view> -->
+      <!-- <button open-type="share">分享到微头条</button> -->
     </view>
   </view>
 </view>

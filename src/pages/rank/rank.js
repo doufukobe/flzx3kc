@@ -22,7 +22,11 @@ Page({
                {rank: '5', score: '250', name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'},
                {rank: '6', score: '200', name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'},
                {rank: '7', score: '150', name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'},
-               {rank: '8', score: '100', name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'}],
+               {rank: '8', score: '100', name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'},
+               {rank: '8', score: '100', name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'},
+               {rank: '9', score: '90', name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'},
+               {rank: '10', score: '80', name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'}],
+    share: '炫耀一下'
   },
 
   /**
@@ -77,7 +81,24 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-  
+  onShareAppMessage(option) {
+    const self = this;
+    // option.from === 'button'
+    return {
+      title: '这是要分享的小程序标题',
+      desc: '我在小程序“猜猜成语”富豪榜排名第' + self.data.mineRank +'位，看看你的排名吧',
+      path: '/pages/index/index?from=sharebuttonabc&otherkey=othervalue', // ?后面的参数会在分享页面打开时传入onLoad方法
+      imageUrl: 'http://p3.pstatp.com/origin/6ef00004cb45c8129641',
+      success() {
+        self.setData({
+          log: '分享发布器已吊起，并不意味着用户分享成功，微头条不提供这个时机的回调'
+        })
+      },
+      fail() {
+        self.setData({
+          log: '分享发布器吊起失败'
+        })
+      }
+    }
   }
 })

@@ -9,7 +9,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.91",
-	"appid": "touristappid",
+	"appid": "tt666110dcf94bcb80",
 	"projectname": "doufukobeflzx3kc",
 	"condition": {
 		"search": {
@@ -25,7 +25,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 2,
 			"list": [
 				{
 					"id": -1,

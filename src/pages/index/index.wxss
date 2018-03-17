@@ -151,4 +151,11 @@
   z-index: 10;
   box-shadow: 0 -2rpx 2rpx 1rpx #ccc inset; 
 }
+
+.log {
+  width: 650rpx;
+  height: 30rpx;
+  font-size: 30rpx;
+  color: #000000;
+}
   

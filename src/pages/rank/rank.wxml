@@ -40,6 +40,9 @@
       <view class="rank-name">{{item.name}}</view>
       <image class="rank-avatar" src="{{item.avatar}}"></image>
     </view>
+    <view class="share-wrapper">
+      <button class="share-btn" open-type="share">{{share}}</button>
+    </view>
   </view>
 </view>
 
