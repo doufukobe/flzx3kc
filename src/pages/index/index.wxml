@@ -1,20 +1,26 @@
 <!--index.wxml-->
 <view class="container">
-  <!-- <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view> -->
   <image src="{{logoSrc}}" class="bg"></image>
   <view class="mode-list">
     <view class="mode-item mode-single" bindtap="goTo" data-type="single">闯关模式</view>
     <view class="mode-item mode-pk"  bindtap="goTo" data-type="pk-loading">PK 模式</view>
     <view class="mode-item mode-rank"  bindtap="goTo" data-type="rank">排行榜</view>  
   </view>
-
+  <view class="attendance-modal" wx:if="{{!isAttendanced}}">
+    <view class="attendance-body" style="flex-direction:column;">
+      <view class="attendance-title">{{attendanceTitle}}</view>
+      <view class="attendance-tip">{{attendanceTip}}</view>
+      <view class="icon-wrapper" style="flex-direction:row;">
+        <view wx:for="{{attendanceDayList}}">
+          <view class="attendance-icon {{item <= attendanceDay ? 'success' : 'fail'}}">{{item}}</view>
+        </view>
+      </view>
+      <view class="icon-wrapper" style="flex-direction:row;">
+        <view wx:for="{{attendanceCoinList}}">
+          <view class="attendance-score {{item <= attendanceDay ? 'score-success' : 'score-fail'}}">{{item}}</view>
+        </view>
+      </view>
+      <view class="take-attendance">{{takeAttendance}}</view>
+    </view>
+  </view>
 </view>

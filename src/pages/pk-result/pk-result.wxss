@@ -60,7 +60,7 @@
 }
 
 .result-content-wrapper-win {
-   width: 650rpx;
+  width: 650rpx;
   height: 538rpx;
   display: flex;
   position: absolute;
