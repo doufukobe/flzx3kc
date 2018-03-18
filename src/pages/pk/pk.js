@@ -1,4 +1,6 @@
 // pages/pk/pk.js
+import { getPKInfo, updatePKInfo, getOpponentPKInfo, } from '../../utils/api.js';
+
 Page({
 
   /**
@@ -9,13 +11,13 @@ Page({
     currentUser: {
       name: '葱头豆瓣酱',
       record: 10,
-      score: -9,
+      score: 0,
       avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
     },
     opponent: {
-      name: '葱头豆瓣酱',
+      name: '老干妈',
       record: 10,
-      score: -5,
+      score: 0,
       avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
     },
     selectChars: [
@@ -39,71 +41,137 @@ Page({
     screenWidth: 375,
     fadeOutChars: [0, 10, 11],
     leftSecondSrc: '../../images/pk/3.png',
-    isBegin: false,
+    isBegin: false, // 标识比赛是否开始
+    isEnd: false, // 标识比赛是否结束
     leftTimePercentage: '100%',
   },
 
   // 事件处理函数
-  handleTouchStart(e) {
-    // 记录起始坐标
-    console.log(e);
-    const startPoint = {
-      clientX: e.touches[0].clientX,
-      clientY: e.touches[0].clientY,
-      index: e.target.dataset.index,
-    };
+  handleTap(e) {
+    // console.log(e.target.dataset.index);
+    let currentSelect = this.data.currentSelect;
+    const newIndex = e.target.dataset.index;
 
-    const currentSelectPoints = [];
-    currentSelectPoints.push(startPoint);
-
-    this.setData({
-      startPoint: startPoint,
-      currentSelectPoints: currentSelectPoints,
-      currentSelect: [],      
-    });
-  },
-  handleTouchMove(e) {
-    // (375 - 25) / 4
-    const basicWidth = (375 - 25) / 8; // iphone 6 单元格宽度
-    const width = this.data.screenWidth / 375 * basicWidth;
-    const height = width;
-
-    // console.log(width, height);
-
-    const currentX = e.touches[0].clientX;
-    const currentY = e.touches[0].clientY;
-
-    // 获得当前点对应的索引。
-    const row = parseInt((currentY - this.data.startPoint.clientY) / height, 10);
-    const column = parseInt((currentX - this.data.startPoint.clientX) / width, 10);
-
-    const nextIndex = row * 8 + column + this.data.startPoint.index;
-    const currentSelect = this.data.currentSelect;
-    const currentIndex = e.target.dataset.index;
-
-    if (typeof currentIndex === 'undefined') {
-      return;
+    // 当前没有选择元素
+    if (currentSelect.length === 0) {
+      currentSelect.push(newIndex);      
+    } else {
+      // 判断是否可以选择
+      const lastIndex = currentSelect[currentSelect.length - 1];
+      const validIndexList = [lastIndex + 1, lastIndex - 1, lastIndex + 8, lastIndex - 8];
+      if (currentSelect.indexOf(newIndex) === -1 && validIndexList.indexOf(newIndex) !== -1) {
+        currentSelect.push(newIndex);
+      }
     }
 
     if (currentSelect.length === 4) {
-      // console.log(currentSelect);
-      const idiomCharList = this.data.idiomCharList;
-      currentSelect.map((item) => {
-        console.log(item);
-        idiomCharList[item].isFadeOut = true;
-      });
-      this.setData({
-        idiomCharList: idiomCharList
-      });
+      // 判断是否正确
+      const answer = [];
+      
+      for (let i = 0; i < 4; i++) {
+        answer.push(this.data.idiomCharList[currentSelect[i]].char);
+      }
+      console.log(answer);
+      let isRight = false;
+      if (this.data.answerPath[answer.join('')]) {
+        isRight = true;
+      }
+
+      // const isRight = false;
+
+      if (isRight) {
+        const idiomCharList = this.data.idiomCharList;
+        currentSelect.map((item) => {
+          console.log(item);
+          idiomCharList[item].isFadeOut = true;
+        });
+
+        // 正确
+        currentSelect = [];
+        this.setData({
+          idiomCharList: idiomCharList,
+          currentSelect: [],
+        });
+        this.postIdiom(answer.join(''));
+      } else {
+        setTimeout(() => {
+          currentSelect = [];
+          this.setData({
+            currentSelect: []
+          });
+        }, 500);
+        this.setData({
+          currentSelect: currentSelect
+        });
+      }
+
       return;
-    } else if (currentSelect.indexOf(nextIndex) === -1) {
-      currentSelect.push(nextIndex);
+    } else if (currentSelect.indexOf(newIndex) === -1) {
+      // currentSelect.push(newIndex);
     }
     this.setData({
       currentSelect: currentSelect
     });
-    console.log(currentSelect);
-    return;
+
+  },
+  handleTouchStart(e) {
+    // 记录起始坐标
+    // 滑动代码
+    // const startPoint = {
+    //   clientX: e.touches[0].clientX,
+    //   clientY: e.touches[0].clientY,
+    //   index: e.target.dataset.index,
+    // };
+
+    // const currentSelectPoints = [];
+    // currentSelectPoints.push(startPoint);
+
+    // this.setData({
+    //   startPoint: startPoint,
+    //   currentSelectPoints: currentSelectPoints,
+    //   currentSelect: [],      
+    // });
+  },
+  handleTouchMove(e) {
+    // 滑动代码
+    // // (375 - 25) / 4
+    // const basicWidth = (375 - 25) / 8; // iphone 6 单元格宽度
+    // const width = this.data.screenWidth / 375 * basicWidth;
+    // const height = width;
+
+    // const currentX = e.touches[0].clientX;
+    // const currentY = e.touches[0].clientY;
+
+    // // 获得当前点对应的索引。
+    // const row = parseInt((currentY - this.data.startPoint.clientY) / height, 10);
+    // const column = parseInt((currentX - this.data.startPoint.clientX) / width, 10);
+
+    // const nextIndex = row * 8 + column + this.data.startPoint.index;
+    // const currentSelect = this.data.currentSelect;
+    // const currentIndex = e.target.dataset.index;
+
+    // if (typeof currentIndex === 'undefined') {
+    //   return;
+    // }
+
+    // if (currentSelect.length === 4) {
+    //   // console.log(currentSelect);
+    //   const idiomCharList = this.data.idiomCharList;
+    //   currentSelect.map((item) => {
+    //     console.log(item);
+    //     idiomCharList[item].isFadeOut = true;
+    //   });
+    //   this.setData({
+    //     idiomCharList: idiomCharList
+    //   });
+    //   return;
+    // } else if (currentSelect.indexOf(nextIndex) === -1) {
+    //   currentSelect.push(nextIndex);
+    // }
+    // this.setData({
+    //   currentSelect: currentSelect
+    // });
+    // return;
   },
 
   /**
@@ -112,43 +180,50 @@ Page({
   onLoad: function (options) {
     const self = this;
     const idiomCharList = this.data.idiomCharList;
-
-    this.data.selectChars.map((item) => {
-      idiomCharList.push({
-        char: item,
-        isFadeOut: false,
-      });
-    });
-
-    this.setData({
-      idiomCharList: idiomCharList,
-    })
     
     // 获取屏幕宽度
     wx.getSystemInfo({
       success: function (res) {
-        console.log(res.model)
-        console.log(res.pixelRatio)
-        console.log(res.windowWidth)
-        
-        console.log(res.windowHeight)
-        console.log(res.language)
-        console.log(res.version)
-        console.log(res.platform)
-
         self.setData({
           screenWidth: res.windowWidth
         });
       }
     })
+
+    getPKInfo(88).then(data => {
+      // console.log(data.meta.list);
+      this.setData({
+        selectChars: data.meta.list,
+        answerPath: data.meta.path,     
+      });
+      setTimeout(() => {
+        console.log(this.data.selectChars);
+        
+        this.data.selectChars.map((item) => {
+          idiomCharList.push({
+            char: item,
+            isFadeOut: false,
+          });
+        });
+
+        this.setData({
+          idiomCharList: idiomCharList,
+        })
+      }, 0);
+      
+    });
+
+    
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    let left = 2;
+    let left = 2; // 2s 倒计时
     let leftTimer;
+
+    // 倒计时的定时器逻辑...
     let timer = setInterval(() => {
       if (left > 0) {
         this.setData({
@@ -167,6 +242,13 @@ Page({
           const d = number - 1.67;
           if (d <= 0) {
             clearInterval(leftTimer);
+            this.setData({
+              isEnd: true
+            });
+            // 跳转pk结果
+            wx.redirectTo({
+              url: `../pk-result/pk-result?currentName=${currentUser.name}&currentScore=${currentUser.score}&opponentName=${opponent.name}&opponentScore=${opponent.score}`,
+            });
           } else {
             this.setData({
               leftTimePercentage: d + '%'
@@ -182,7 +264,59 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    // 获取对手进度的定时器逻辑
+    let opponentTimer = setInterval(() => {
+      if (this.data.isEnd) {
+        clearInterval(opponentTimer);
+      } else if (this.data.isBegin) {
+        getOpponentPKInfo(88).then((data) => {
+          this.deleteIdiom(data);
+        });
+      }
+    }, 1000);
+  },
+  // 删除成语，在获取对手进度后使用，主要是增加 fadeOut 类
+  deleteIdiom(idiomList) {
+    const opponentSelect = [];
     
+    idiomList.forEach((idiom) => {
+      if (this.data.answerPath[idiom]) {
+        const charPathList = this.data.answerPath[idiom];
+        const opponent = this.data.opponent;
+        opponent.score += 10;
+
+        this.setData({
+          opponent,
+        });
+
+        charPathList.forEach(charPath => {
+          opponentSelect.push(charPath[0] + charPath[1] * 8);
+        });
+      }
+    });
+
+    const idiomCharList = this.data.idiomCharList;
+    opponentSelect.map((item) => {
+      console.log(item);
+      idiomCharList[item].isFadeOut = true;
+    });
+
+    this.setData({
+      idiomCharList: idiomCharList,
+    });
+  },
+
+  // 更新自己成语信息
+  postIdiom(cy) {
+    // 更新本地分数
+    const currentUser = this.data.currentUser;
+    currentUser.score += 10;
+    this.setData({
+      currentUser,
+    });
+    updatePKInfo(88, cy).then(data => {
+
+    });
   },
 
   /**

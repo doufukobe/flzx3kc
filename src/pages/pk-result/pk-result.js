@@ -18,15 +18,33 @@ Page({
     },
     winTip: '金币+10',
     pkTip: 'VS',
-    nextGame: '再来一局(10)',
-    share: '炫耀一下'
+    share: '炫耀一下',
+    nextGame: '再来一局'
+  },
+
+  goToPkLoading() {
+    wx.redirectTo({
+      url: '../pk-loading/pk-loading',
+    });
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const currentUser = this.data.currentUser;
+    const opponent = this.data.opponent;
 
+    currentUser.name = options.currentName;
+    currentUser.score = options.currentScore;
+    opponent.name = options.opponentName;
+    opponent.score = options.opponentScore;
+
+    this.setData({
+      currentUser,
+      opponent
+    });
+  
   },
 
   /**

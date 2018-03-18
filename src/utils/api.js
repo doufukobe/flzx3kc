@@ -8,6 +8,12 @@ const standAlone = {
 const pathScore = {
   record: '/score/record',
 }
+const pk = {
+  other: '/pk/other',
+  post: '/pk/post',
+  polling: '/pk/polling'
+}
+const mock = require('./mock.js').default;
 
 // 获取当前闯关信息
 const getCurrentLevelInfo = (userId) => {
@@ -105,6 +111,62 @@ const getRankList = (userId) => {
         resolve(res.data.data);
       }
     })
+  })
+}
+
+// 获取 PK 详情
+const getPKInfo = (userId) => {
+  return new Promise((resolve) => {
+    wx.request({
+      // FIXME: 从 globalData 获取 API 配置，目前 getApp 存在 bug，返回 undefined
+      url: `${host}${pk.other}`,
+      data: {
+        user_id: userId,
+      },
+      success: (res) => {
+        resolve(res.data.data);
+        // resolve(mock.data);
+      },
+      fail: (res) => {
+        resolve(mock.data);
+      }
+    });
+  });
+}
+
+// 上报 PK 详情
+const updatePKInfo = (userId, cy) => {
+  return new Promise((resolve) => {
+    wx.request({
+      // FIXME: 从 globalData 获取 API 配置，目前 getApp 存在 bug，返回 undefined
+      url: `${host}${pk.post}`,
+      data: {
+        user_id: userId,
+        cy: cy,
+      },
+      method: 'POST',
+      success: (res) => {
+        resolve(res.data.data);
+      },
+    });
+  });
+}
+
+// 获取对手 PK 详情
+const getOpponentPKInfo = (userId) => {
+  return new Promise((resolve) => {
+    wx.request({
+      // FIXME: 从 globalData 获取 API 配置，目前 getApp 存在 bug，返回 undefined
+      url: `${host}${pk.polling}`,
+      data: {
+        user_id: userId,
+      },
+      success: (res) => {
+        resolve(res.data.data);
+        console.log(res.data.data);
+        // resolve(['打入冷宫']);
+      },
+    });
   });
 }
 
@@ -114,4 +176,7 @@ export {
   universalScore,
   answerIdiomSuccess,
   getRankList,
+  getPKInfo,
+  updatePKInfo,
+  getOpponentPKInfo,
 }

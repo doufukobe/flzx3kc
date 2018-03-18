@@ -16,7 +16,7 @@
   <view class="pk-time">
    <view class="pk-time-left" style="width: {{leftTimePercentage}}"></view>
   </view>
-  <view class="character-selection pk-content" bindtouchmove="handleTouchMove" bindtouchstart="handleTouchStart">
+  <view class="character-selection pk-content" bindtouchmove="handleTouchMove" bindtouchstart="handleTouchStart" bindtap="handleTap">
     <view wx:for="{{idiomCharList}}" class="character-item" data-index="{{index}}">
       <view class="character-content {{(currentSelect[0] === index || currentSelect[1] === index || currentSelect[2] === index || currentSelect[3] === index) ? 'select' : ''}} {{item.isFadeOut ? 'fade-out' : ''}}" data-index="{{index}}">
         {{item.char}}
