@@ -42,29 +42,53 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 76rpx;
+  margin: 0 60rpx;
 }
 
 .operation-wrapper .operation-item {
-  width: 186rpx;
+  width: 260rpx;
   height: 80rpx;
   line-height: 80rpx;
   font-size: 32rpx;
   text-align: center;
   color: #fff;
   border-radius: 200rpx;
+  margin: 0 30rpx;
+}
+
+.operation-coin {
+  width: 160rpx;
+  height: 50rpx;
+  display: flex;
+  float: right;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30rpx;
+  margin-right: 30rpx;
+}
+
+.coin {
+  width: 44rpx;
+  height: 44rpx;
+}
+
+.coin-num {
+  width: 60rpx;
+  height: 44rpx;
+  color: #997A56;
+  margin-left: 10rpx
 }
 
 .operation-wrapper .operation-prompt {
-  background-color: #997A56;
+  background-color: #000000;
 }
 
 .operation-wrapper .operation-help {
-  background-color: #090909;
+  background-color: #997A56;
 }
 
 .operation-wrapper .operation-skip {
-  background-color: #63492A;
+  background-color: #997A56;
 }
 
 /* 输入成语部分 */

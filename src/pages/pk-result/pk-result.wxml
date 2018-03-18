@@ -22,4 +22,5 @@
     <image src="{{currentUser.avatar}}" class="{{isWin ? 'result-header-avatar-win' : 'result-header-avatar-lose'}}"></image> 
   </view>
   <view class="result-next-game">{{nextGame}}</view>
+  <button class="share-btn" open-type="share">{{share}}</button>
 </view>

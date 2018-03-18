@@ -18,7 +18,8 @@ Page({
     },
     winTip: '金币+10',
     pkTip: 'VS',
-    nextGame: '再来一局(10)'
+    nextGame: '再来一局(10)',
+    share: '炫耀一下'
   },
 
   /**
@@ -69,11 +70,23 @@ Page({
   onReachBottom: function () {
 
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  onShareAppMessage(option) {
+    // option.from === 'button'
+    return {
+      title: '猜猜成语 — 猜成语，好友PK，一起来玩!',
+      desc: '我在猜猜成语中获得胜利',
+      path: '/pages/index/index?from=sharebuttonabc&otherkey=othervalue', // ?后面的参数会在分享页面打开时传入onLoad方法
+      imageUrl: 'http://p3.pstatp.com/origin/6ef00004cb45c8129641',
+      success() {
+        self.setData({
+          log: '分享发布器已吊起，并不意味着用户分享成功，微头条不提供这个时机的回调'
+        })
+      },
+      fail() {
+        self.setData({
+          log: '分享发布器吊起失败'
+        })
+      }
+    }
   }
 })

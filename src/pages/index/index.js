@@ -24,6 +24,18 @@ Page({
       url: url
     });
   },
+  onLoad: function (options) {
+    if (Promise) {
+      console.log('support');
+    }
+    const self = app;
+    wx.getUserInfo({
+      success: function (res) {
+        self.globalData.userInfo = res.userInfo;
+        console.log(self.globalData.userInfo.nickName);
+      }
+    })
+  },
   // publish(e) {
   //   const self = this;
   //   wx.request({
@@ -53,7 +65,7 @@ Page({
   //   })
   // }
   getUserInfo(e) {
-    const self = this;
+    const self = app;
     wx.getUserInfo({
       success: function (res) {
         var userInfo = res.userInfo
@@ -74,10 +86,10 @@ Page({
   onShareAppMessage(option) {
     // option.from === 'button'
     return {
-      title: '这是要分享的小程序标题',
-      desc: '这是默认的分享文案，用户可以直接发送，也可以在发布器内修改',
+      title: '猜猜成语 — 猜成语，好友PK，一起来玩!',
+      desc: '这个游戏太好玩了，一起来玩吧',
       path: '/pages/index/index?from=sharebuttonabc&otherkey=othervalue', // ?后面的参数会在分享页面打开时传入onLoad方法
-      imageUrl: 'http://e.com/e.png',
+      imageUrl: 'http://p3.pstatp.com/origin/6ef00004cb45c8129641',
       success () {
         self.setData({
           log: '分享发布器已吊起，并不意味着用户分享成功，微头条不提供这个时机的回调'

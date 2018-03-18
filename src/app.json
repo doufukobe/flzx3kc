@@ -7,12 +7,13 @@
     "pages/pk-loading/pk-loading",    
     "pages/rank/rank",
     "pages/logs/logs",
-    "pages/pk-result/pk-result"
+    "pages/pk-result/pk-result",
+    "pages/game-over/game-over"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "FLZX3KC",
-    "navigationBarTextStyle":"#fff"
+    "navigationBarTitleText": "猜猜成语",
+    "navigationBarTextStyle":"black"
   }
 }

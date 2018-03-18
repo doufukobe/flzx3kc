@@ -7,9 +7,11 @@ Page({
    */
   data: {
     index: 0, // 题目序号，默认从1开始
+    maxLevel: 100,
     idiomSrc: '../../images/single-detail/idiom-bg.png', // 成语背景图链接
     idiomBgSrc: '../../images/single-detail/idiom-bg-large.png', // 通用背景链接
     downloadBgSrc: '../../images/single-detail/idiom-bg-down.png', // 底部吸底图片
+    icon: '../../images/single-detail/money_icon.png',
     inputIdiom: ['', '', '', ''], // 输入成语数据源
     selectChars: [
       '連', '膽', '夸', '話', '費', '級', '抗', '為',
@@ -22,6 +24,7 @@ Page({
     // errorMsg: '存在错误哦！',
     errorMsg: '先删除错误答案',
     idiomDetail: {}, // 接口返回成语详情数据
+    coinCount: 300,
   },
 
   // 事件处理函数
@@ -30,9 +33,17 @@ Page({
     this.handleAdd(index);
   },
   goToNext(levelId) {
+    const nextIndex = ~~this.data.index + 1;
+    const maxLevel = ~~this.data.maxLevel;
+    let jumpUrl = '../single-detail/single-detail?index=' + nextIndex + '&max_level=' + maxLevel;
+    if (this.data.maxLevel === this.data.index) {
+      jumpUrl = '../game-over/game-over'
+    };
+    console.log(jumpUrl)
     wx.redirectTo({
-      url: '../single-detail/single-detail?index=' + (~~this.data.index + 1),
+      url: jumpUrl,
     });
+    this.answerSuccess();
   },
   toastSuccess() {
     this.setData({
@@ -162,13 +173,15 @@ Page({
   onLoad: function (options) {
     console.log(options);
     this.setData({
-      index: options.index
+      index: options.index,
+      maxLevel: options.max_level
     });
 
     getIdiomDetailInfo(1, this.data.index).then(data => {
       console.log(data);
       this.setData({
-        idiomDetail: data
+        idiomDetail: data,
+        coinCount: data.score
       });
     });
   },
@@ -220,5 +233,24 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+  onShareAppMessage(option) {
+    // option.from === 'button'
+    return {
+      title: '猜猜成语 — 猜成语，好友PK，一起来玩!',
+      desc: '这个游戏太好玩了，一起来玩吧',
+      path: '/pages/index/index?from=sharebuttonabc&otherkey=othervalue', // ?后面的参数会在分享页面打开时传入onLoad方法
+      imageUrl: 'http://p3.pstatp.com/origin/6ef00004cb45c8129641',
+      success() {
+        self.setData({
+          log: '分享发布器已吊起，并不意味着用户分享成功，微头条不提供这个时机的回调'
+        })
+      },
+      fail() {
+        self.setData({
+          log: '分享发布器吊起失败'
+        })
+      }
+    }
   }
 })

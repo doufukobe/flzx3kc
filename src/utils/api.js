@@ -3,6 +3,7 @@ const standAlone = {
   currentLevel: '/stand_alone/current_level',
   levelDetail: '/stand_alone/level_detail',
   success: '/stand_alone/success',
+  rank: '/score/rank',
 };
 const pathScore = {
   record: '/score/record',
@@ -89,9 +90,28 @@ const answerIdiomSuccess = (userId, levelId) => {
   });
 }
 
+const getRankList = (userId) => {
+  return new Promise((resolve) => {
+    wx.request({
+      url: `${host}${standAlone.rank}`,
+      data: {
+        user_id: userId,
+      },
+      method: 'GET',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success: (res) => {
+        resolve(res.data.data);
+      }
+    })
+  });
+}
+
 export {
   getCurrentLevelInfo,
   getIdiomDetailInfo,
   universalScore,
   answerIdiomSuccess,
+  getRankList,
 }
