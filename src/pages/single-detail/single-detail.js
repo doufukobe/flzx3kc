@@ -25,6 +25,7 @@ Page({
     errorMsg: '先删除错误答案',
     idiomDetail: {}, // 接口返回成语详情数据
     coinCount: 300,
+    userInfo: {}
   },
 
   // 事件处理函数
@@ -177,7 +178,23 @@ Page({
       maxLevel: options.max_level
     });
 
-    getIdiomDetailInfo(1, this.data.index).then(data => {
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      //  userInfo
+    }
+
+    getIdiomDetailInfo(userId, this.data.index).then(data => {
       console.log(data);
       this.setData({
         idiomDetail: data,

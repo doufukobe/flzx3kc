@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo: {},
     idiomList: [],
     // currentProgress: 34, // 当前进度,
     idiomInfo: {},
@@ -27,8 +28,24 @@ Page({
       console.log('support');
     }
 
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      //  userInfo
+    }
+
     // 不支持 async
-    getCurrentLevelInfo(1).then((data) => {
+    getCurrentLevelInfo(userId).then((data) => {
       console.log(data);
       this.setData({
         idiomInfo: data[0],

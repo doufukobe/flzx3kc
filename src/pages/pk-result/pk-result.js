@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo: {},
     isWin: true,
     currentUser: {
       name: '葱头豆瓣酱',
@@ -32,6 +33,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // const self = this;
+    // try {
+    //   var value = wx.getStorageSync('userInfo')
+    //   if (value) {
+    //     console.log(value)
+    //     self.setData({
+    //       userInfo: value,
+    //       currentUser: {
+    //         name: value.nickName,
+    //         score: 0,
+    //         record: 5,
+    //         avatar: value.avatar,
+    //       },
+    //     });
+    //   }
+    // } catch (e) {
+    //   //  userInfo
+    // }
     const currentUser = this.data.currentUser;
     const opponent = this.data.opponent;
 

@@ -75,12 +75,15 @@
 }
 
 .top-three-name{
-  width: 216rpx;
+  width: 186rpx;
   height: 40rpx;
   font-size: 28rpx;
   color: #000000;
   display: flex;
   justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .top-three-score{
@@ -131,6 +134,9 @@
   color: #000000;
   display: flex;
   justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mine-score{
@@ -178,7 +184,7 @@
 }
 
 .rank-name {
-  width: 150rpx;
+  width: 130rpx;
   height: 40rpx;
   font-size: 28rpx;
   text-align: center;
@@ -186,6 +192,9 @@
   display: flex;
   justify-content: center;
   margin-left: 160rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .rank-avatar {
