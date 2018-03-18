@@ -65,9 +65,9 @@ Page({
           this.setData({
             isMatched: true,
             opponent: {
-              name: '老干妈',
+              name: data.other.name,
               record: 10,
-              avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+              avatar: data.other.avatar_url
             }
           });
 

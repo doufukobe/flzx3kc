@@ -20,13 +20,13 @@
       <view class="pk-user">
          <image src="{{currentUser.avatar}}" class="current-user"></image> 
         <view class="pk-user-name">{{currentUser.name}}</view>
-        <view class="pk-user-record">战绩{{currentUser.record}}胜</view>
+        <!-- <view class="pk-user-record">战绩{{currentUser.record}}胜</view> -->
       </view>
       <view class="pk-title">VS</view>
       <view class="pk-user">
          <image src="{{opponent.avatar}}" class="opponent-user"></image> 
         <view class="pk-user-name">{{opponent.name}}</view>
-        <view class="pk-user-record">战绩{{opponent.record}}胜</view>
+        <!-- <view class="pk-user-record">战绩{{opponent.record}}胜</view> -->
       </view>
     </view>
   </view>

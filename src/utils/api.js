@@ -11,7 +11,8 @@ const pathScore = {
 const pk = {
   other: '/pk/other',
   post: '/pk/post',
-  polling: '/pk/polling'
+  polling: '/pk/polling',
+  gameOver: '/pk/game_over',
 }
 const mock = require('./mock.js').default;
 
@@ -70,7 +71,7 @@ const universalScore = (userId, score, comment) => {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       success: (res) => {
-        resolve(res.data.data);
+        resolve(res.data);
       }
     });
   });
@@ -144,6 +145,9 @@ const updatePKInfo = (userId, cy) => {
         user_id: userId,
         cy: cy,
       },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
       method: 'POST',
       success: (res) => {
         resolve(res.data.data);
@@ -170,6 +174,25 @@ const getOpponentPKInfo = (userId) => {
   });
 }
 
+// 上报 pk 结束
+const updatePKEnding = (userId) => {
+  return new Promise((resolve) => {
+    wx.request({
+      url: `${host}${pk.gameOver}`,
+      data: {
+        user_id: userId,
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: 'POST',
+      success: (res) => {
+        resolve(res.data.data);
+      },
+    });
+  });
+}
+
 export {
   getCurrentLevelInfo,
   getIdiomDetailInfo,
@@ -179,4 +202,5 @@ export {
   getPKInfo,
   updatePKInfo,
   getOpponentPKInfo,
+  updatePKEnding,
 }
