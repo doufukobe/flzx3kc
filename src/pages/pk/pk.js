@@ -191,7 +191,7 @@ Page({
           currentUser: {
             name: value.nickName,
             score: 0,
-            avatar: value.avatar,
+            avatar: value.avatarUrl,
           },
         });
       }
