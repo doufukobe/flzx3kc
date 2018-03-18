@@ -36,7 +36,7 @@ Page({
            name: value.nickName,
            score: 0,
            record: 5,
-           avatar: value.avatar,
+           avatar: value.avatarUrl,
          },
        });
      }
