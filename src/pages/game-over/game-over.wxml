@@ -1,0 +1,10 @@
+<!--pages/pk-loading/pk-loading.wxml-->
+<view class="container">
+  <image src="../../images/pk-loading/bg.png" class="bg"></image>
+  <view class="content-wrapper" style="flex-direction:column;">
+    <view class="over-title">{{title}}</view>
+    <button class="action-btn share" open-type="share">{{share}}</button>
+    <view class="action-btn go-back" bindtap="goTo" data-type="index">{{goBack}}</view>
+  </view>
+  <image src="{{icon}}" class="over-icon"></image>
+</view>

@@ -25,7 +25,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": -1,
 			"list": [
 				{
 					"id": 0,
@@ -54,6 +54,18 @@
 				{
 					"id": -1,
 					"name": "榜单",
+					"pathName": "pages/pk-result/pk-result",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "over",
+					"pathName": "pages/game-over/game-over",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "over",
 					"pathName": "pages/pk-result/pk-result",
 					"query": ""
 				}

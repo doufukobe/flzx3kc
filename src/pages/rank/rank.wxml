@@ -7,37 +7,46 @@
     <view class="toprank-wrapper">
       <image src="{{topThreeSrc}}" class="top-three-bg"></image>
       <view class = "top-three-rank" style="flex-direction:row;">
-        <view class= "top-three-user">
-          <image class="top-three-avatar" src="{{fisrtAvatarUrl}}"></image>
-          <view class="top-three-name">{{fisrtName}}</view>
-          <view class="top-three-score">{{fisrtScore}}</view>
+        <view class= "top-three-user" style="flex-direction:column;">
+          <view class="top-three-avatar-wrapper" style="flex-direction:column;">
+            <image class="top-three-avatar" src="{{userList[2].avatar}}"></image>
+            <!-- <image class='top-three-follow' src="{{unfollowIcon}}" bindtap="onFollowUser"></image> -->
+          </view>
+          <view class="top-three-name">{{userList[2].user_name}}</view>
+          <view class="top-three-score">{{userList[2].score}}</view>
         </view>
-        <view class= "top-three-user">
-          <image class="top-three-avatar" src="{{secondAvatarUrl}}"></image>
-          <view class="top-three-name">{{fisrtName}}</view>
-          <view class="top-three-score">{{fisrtScore}}</view>
+        <view class= "top-three-user" style="flex-direction:column;">
+          <view class="top-three-avatar-wrapper">
+            <image class="top-three-avatar" src="{{userList[0].avatar}}"></image>
+            <!-- <image class='top-three-follow' src="{{unfollowIcon}}"></image> -->
+          </view>
+          <view class="top-three-name">{{userList[0].user_name}}</view>
+          <view class="top-three-score">{{userList[0].score}}</view>
         </view>
-        <view class= "top-three-user">
-           <image class="top-three-avatar" src="{{thirdAvatarUrl}}"></image>
-           <view class="top-three-name">{{fisrtName}}</view>
-           <view class="top-three-score">{{fisrtScore}}</view>
+        <view class= "top-three-user" style="flex-direction:column;">
+           <view class="top-three-avatar-wrapper">
+            <image class="top-three-avatar" src="{{userList[1].avatar}}"></image>
+            <!-- <image class='top-three-follow' src="{{unfollowIcon}}"></image> -->
+          </view>
+           <view class="top-three-name">{{userList[1].user_name}}</view>
+           <view class="top-three-score">{{userList[1].score}}</view>
         </view>
       </view>
       <view class="mine-wrapper" style="flex-direction:row;">
         <view class="mine-rank">{{mineRank}}</view>
-        <image class="mine-avatar" src="{{thirdAvatarUrl}}"></image>
+        <image class="mine-avatar" src="{{userInfo.avatar}}"></image>
         <view class="mine-score-wrapper">
-          <view class="mine-name">{{mineName}}</view>
-          <view class="mine-score">{{mineScore}}</view>
+          <view class="mine-name">{{userInfo.user_name}}</view>
+          <view class="mine-score">{{userInfo.score}}</view>
         </view>
       </view>
     </view>
   </view>
   <view class="rank-wrapper">
-    <view wx:for="{{userList}}" wx:for-item="item" class="user-item-wrapper" style="flex-direction:row;">
-      <view class="rank-index">{{item.rank}}</view>
+    <view wx:for="{{userList}}" wx:for-item="item" class="user-item-wrapper" style="flex-direction:row;" wx:if="{{index > 2}}">
+      <view class="rank-index">{{index+1}}</view>
       <view class="rank-score">{{item.score}}</view>
-      <view class="rank-name">{{item.name}}</view>
+      <view class="rank-name">{{item.user_name}}</view>
       <image class="rank-avatar" src="{{item.avatar}}"></image>
     </view>
     <view class="share-wrapper">
