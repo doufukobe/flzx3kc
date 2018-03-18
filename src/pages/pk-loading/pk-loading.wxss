@@ -145,6 +145,10 @@ page {
   margin-top: 84rpx;
 }
 
+.pk-rule .text-red {
+  color: #e5020a;
+}
+
 .bottom-guide {
   position: absolute;
   bottom: 0;

@@ -21,6 +21,6 @@
     <image class="result-header-bg {{isWin ? 'win' : 'lose'}}"></image>
     <image src="{{currentUser.avatar}}" class="{{isWin ? 'result-header-avatar-win' : 'result-header-avatar-lose'}}"></image> 
   </view>
-  <view class="result-next-game">{{nextGame}}</view>
+  <view class="result-next-game" bindtap="goToPkLoading">{{nextGame}}</view>
   <button class="share-btn" open-type="share">{{share}}</button>
 </view>

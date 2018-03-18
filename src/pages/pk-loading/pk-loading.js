@@ -1,35 +1,63 @@
 // pages/pk-loading/pk-loading.js
+import { getPKInfo, updatePKInfo, getOpponentPKInfo, } from '../../utils/api.js';
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    isMatched: true, // 是否匹配成功
-    passedTime: 3, // 已等待时间
+    isMatched: false, // 是否匹配成功
+    passedTime: 0, // 已等待时间
     currentUser: {
       name: '葱头豆瓣酱',
       record: 10,
       avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
     },
     opponent: {
-      name: '葱头豆瓣酱',
-      record: 10,
-      avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+      name: '',
+      record: 0,
+      avatar: ''
     }
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+    let timer = setInterval(() => {
+      let passedTime = this.data.passedTime;
+      passedTime += 1;
+      this.setData({
+        passedTime,
+      });
+      getPKInfo(1).then((data) => {
+        console.log(data);
+        if (data.game_status === 1) {
+          clearInterval(timer);
+          this.setData({
+            isMatched: true,
+            opponent: {
+              name: '老干妈',
+              record: 10,
+              avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+            }
+          });
+
+          setTimeout(() => {
+            wx.redirectTo({
+              url: '../pk/pk',
+            });
+          }, 2000);
+        }
+      });
+    }, 1000);
   },
 
   /**
