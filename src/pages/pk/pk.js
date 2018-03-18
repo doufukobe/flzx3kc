@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo: {},
     currentIndex: -1,
     currentUser: {
       name: '葱头豆瓣酱',
@@ -180,7 +181,22 @@ Page({
   onLoad: function (options) {
     const self = this;
     const idiomCharList = this.data.idiomCharList;
-    
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        self.setData({
+          userInfo: value,
+          currentUser: {
+            name: value.nickName,
+            score: 0,
+            avatar: value.avatar,
+          },
+        });
+      }
+    } catch (e) {
+      //  userInfo
+    }
     // 获取屏幕宽度
     wx.getSystemInfo({
       success: function (res) {

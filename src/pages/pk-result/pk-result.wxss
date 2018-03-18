@@ -129,8 +129,8 @@
   height: 34rpx;
   color: #000000;
   font-size: 24rpx;
-  overflow: hidden;
   margin-top: 10rpx;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: center;

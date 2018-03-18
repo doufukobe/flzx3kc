@@ -33,6 +33,10 @@ Page({
       success: function (res) {
         self.globalData.userInfo = res.userInfo;
         console.log(self.globalData.userInfo.nickName);
+        wx.setStorage({
+          key: "userInfo",
+          data: res.userInfo
+        })
       }
     })
   },

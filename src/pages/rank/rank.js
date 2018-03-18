@@ -21,6 +21,7 @@ Page({
     mineRank: '460',
     mineName: '葱头豆瓣酱',
     mineScore: '480',
+    myUserInfo: {},
     userInfo: {score: '300', user_name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'},
     userList: [{rank: '1', score: '300', user_name: '葱头豆瓣酱', avatar:'../../images/rank/first.jpg'},
                {rank: '2', score: '250', user_name: '葱头豆瓣酱', avatar: '../../images/rank/first.jpg'},
@@ -45,12 +46,23 @@ Page({
       console.log(app.globalData.userInfo.userId);      
     }
 
-    getRankList(6878426975).then((data) => {
+    const self = this;
+    wx.getStorage({
+      key: 'userInfo',
+      success: function (res) {
+        console.log(res.data)
+        self.setData({
+          myUserInfo: res.data
+        });
+      }
+    });
+
+    getRankList(myUserInfo.userId).then((data) => {
       console.log(data);
       this.setData({
         userList: data.rank,
         userInfo: data.top.user_info,
-        mineRank: data.top.rand_num
+        mineRank: data.top.rand_num,
       })
     });
   },

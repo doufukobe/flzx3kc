@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo: {},
     isMatched: false, // 是否匹配成功
     passedTime: 0, // 已等待时间
     currentUser: {
@@ -24,7 +25,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+   const self = this;
+   try {
+     var value = wx.getStorageSync('userInfo')
+     if (value) {
+       console.log(value)
+       self.setData({
+         userInfo: value,
+         currentUser: {
+           name: value.nickName,
+           score: 0,
+           record: 5,
+           avatar: value.avatar,
+         },
+       });
+     }
+   } catch (e) {
+     //  userInfo
+   }
   },
 
   /**
@@ -37,6 +55,9 @@ Page({
       this.setData({
         passedTime,
       });
+      const userInfo = this.data.userInfo;
+      console.log('pk userinfo')
+      console.log(userInfo)
       getPKInfo(1).then((data) => {
         console.log(data);
         if (data.game_status === 1) {
