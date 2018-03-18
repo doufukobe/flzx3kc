@@ -65,7 +65,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    // 不支持 async
+    getCurrentLevelInfo(1).then((data) => {
+      console.log(data);
+      this.setData({
+        idiomInfo: data[0],
+        idiomList: data[1],
+      });
+    });
   },
 
   /**

@@ -1,5 +1,5 @@
 // pages/pk/pk.js
-import { getPKInfo, updatePKInfo, getOpponentPKInfo, } from '../../utils/api.js';
+import { getPKInfo, updatePKInfo, getOpponentPKInfo, updatePKEnding } from '../../utils/api.js';
 
 Page({
 
@@ -16,7 +16,7 @@ Page({
       avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
     },
     opponent: {
-      name: '老干妈',
+      name: '',
       record: 10,
       score: 0,
       avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
@@ -45,6 +45,7 @@ Page({
     isBegin: false, // 标识比赛是否开始
     isEnd: false, // 标识比赛是否结束
     leftTimePercentage: '100%',
+    userId: 1,
   },
 
   // 事件处理函数
@@ -206,11 +207,16 @@ Page({
       }
     })
 
-    getPKInfo(88).then(data => {
+    getPKInfo(this.data.userId).then(data => {
       // console.log(data.meta.list);
       this.setData({
         selectChars: data.meta.list,
-        answerPath: data.meta.path,     
+        answerPath: data.meta.path,
+        opponent: {
+          name: data.other.name,
+          avatar: data.other.avatar_url,
+          score: 0,
+        }     
       });
       setTimeout(() => {
         console.log(this.data.selectChars);
@@ -255,15 +261,18 @@ Page({
 
         leftTimer = setInterval(() => {
           const number = parseInt(this.data.leftTimePercentage.slice(0, -1), 10);
-          const d = number - 1.67;
+          const d = number - 16.7;
           if (d <= 0) {
             clearInterval(leftTimer);
             this.setData({
               isEnd: true
             });
+            // 上报游戏结束
+            updatePKEnding(this.data.userId);
+
             // 跳转pk结果
             wx.redirectTo({
-              url: `../pk-result/pk-result?currentName=${currentUser.name}&currentScore=${currentUser.score}&opponentName=${opponent.name}&opponentScore=${opponent.score}`,
+              url: `../pk-result/pk-result?currentName=${this.data.currentUser.name}&currentScore=${this.data.currentUser.score}&opponentName=${this.data.opponent.name}&opponentScore=${this.data.opponent.score}`,
             });
           } else {
             this.setData({
@@ -285,7 +294,7 @@ Page({
       if (this.data.isEnd) {
         clearInterval(opponentTimer);
       } else if (this.data.isBegin) {
-        getOpponentPKInfo(88).then((data) => {
+        getOpponentPKInfo(this.data.userId).then((data) => {
           this.deleteIdiom(data);
         });
       }
@@ -330,7 +339,7 @@ Page({
     this.setData({
       currentUser,
     });
-    updatePKInfo(88, cy).then(data => {
+    updatePKInfo(this.data.userId, cy).then(data => {
 
     });
   },

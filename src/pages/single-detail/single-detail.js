@@ -140,7 +140,8 @@ Page({
     }
 
     universalScore(1, -30, 'use_suggestions').then(data => {
-      if (data) {
+      if (data.status === 'success') {
+        console.log(data);
         console.log(this.data.idiomDetail.answer.split(''));
         console.log(this.data.inputIdiom.length);
         const nextCorrectChar = this.data.idiomDetail.answer.split('')[currentValidLength];
@@ -148,6 +149,8 @@ Page({
 
         const index = this.data.idiomDetail.words.indexOf(nextCorrectChar);
         this.handleAdd(index);
+      } else {
+        this.toastError(data.message);
       }
     });
   },
@@ -155,12 +158,12 @@ Page({
   skip(e) {
     // todo: 扣分
     universalScore(1, -100, 'use_suggestions').then(data => {
-      if (data) {
+      if (data.status === 'success') {
         this.answerSuccess();
+      } else {
+        this.toastError(data.message);
       }
     });
-
-    // 闯关成功
   },
   answerSuccess() {
     answerIdiomSuccess(1, this.data.index).then(data => {

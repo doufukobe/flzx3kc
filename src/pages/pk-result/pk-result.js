@@ -20,7 +20,10 @@ Page({
     winTip: '金币+10',
     pkTip: 'VS',
     share: '炫耀一下',
-    nextGame: '再来一局'
+    nextGame: '再来一局',
+    userInfo: {
+      userId: 1
+    }
   },
 
   goToPkLoading() {
@@ -53,15 +56,21 @@ Page({
     // }
     const currentUser = this.data.currentUser;
     const opponent = this.data.opponent;
+    let isWin = true;
 
     currentUser.name = options.currentName;
     currentUser.score = options.currentScore;
     opponent.name = options.opponentName;
     opponent.score = options.opponentScore;
 
+    if (options.currentScore < options.opponentScore) {
+      isWin = false;
+    }
+
     this.setData({
       currentUser,
-      opponent
+      opponent,
+      isWin,
     });
   
   },
