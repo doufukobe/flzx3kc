@@ -10,16 +10,16 @@ Page({
     userInfo: {},
     currentIndex: -1,
     currentUser: {
-      name: '葱头豆瓣酱',
+      name: '',
       record: 10,
       score: 0,
-      avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+      avatar: ''
     },
     opponent: {
       name: '',
       record: 10,
       score: 0,
-      avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+      avatar: ''
     },
     selectChars: [
       '連', '膽', '夸', '話', '費', '級', '抗', '為',
@@ -45,7 +45,7 @@ Page({
     isBegin: false, // 标识比赛是否开始
     isEnd: false, // 标识比赛是否结束
     leftTimePercentage: '100%',
-    userId: 1,
+    userId: '',
   },
 
   // 事件处理函数
@@ -180,62 +180,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const self = this;
-    const idiomCharList = this.data.idiomCharList;
-    try {
-      var value = wx.getStorageSync('userInfo')
-      if (value) {
-        console.log(value)
-        self.setData({
-          userInfo: value,
-          currentUser: {
-            name: value.nickName,
-            score: 0,
-            avatar: value.avatarUrl,
-          },
-        });
-      }
-    } catch (e) {
-      //  userInfo
-    }
-    // 获取屏幕宽度
-    wx.getSystemInfo({
-      success: function (res) {
-        self.setData({
-          screenWidth: res.windowWidth
-        });
-      }
-    })
 
-    getPKInfo(this.data.userId).then(data => {
-      // console.log(data.meta.list);
-      this.setData({
-        selectChars: data.meta.list,
-        answerPath: data.meta.path,
-        opponent: {
-          name: data.other.name,
-          avatar: data.other.avatar_url,
-          score: 0,
-        }     
-      });
-      setTimeout(() => {
-        console.log(this.data.selectChars);
-        
-        this.data.selectChars.map((item) => {
-          idiomCharList.push({
-            char: item,
-            isFadeOut: false,
-          });
-        });
-
-        this.setData({
-          idiomCharList: idiomCharList,
-        })
-      }, 0);
-      
-    });
-
-    
   },
 
   /**
@@ -261,18 +206,35 @@ Page({
 
         leftTimer = setInterval(() => {
           const number = parseInt(this.data.leftTimePercentage.slice(0, -1), 10);
-          const d = number - 16.7;
+          const d = number - 1.67;
           if (d <= 0) {
             clearInterval(leftTimer);
             this.setData({
               isEnd: true
             });
             // 上报游戏结束
-            updatePKEnding(this.data.userId);
+
+            const self = this;
+            let userId = 1;
+            try {
+              var value = wx.getStorageSync('userInfo')
+              if (value) {
+                console.log(value)
+                userId = value.userId || 1;
+                console.log(value.userId)
+                self.setData({
+                  userInfo: value
+                });
+              }
+            } catch (e) {
+              console.log(e)
+              //  userInfo
+            }
+            updatePKEnding(userId);
 
             // 跳转pk结果
             wx.redirectTo({
-              url: `../pk-result/pk-result?currentName=${this.data.currentUser.name}&currentScore=${this.data.currentUser.score}&opponentName=${this.data.opponent.name}&opponentScore=${this.data.opponent.score}`,
+              url: `../pk-result/pk-result?currentName=${this.data.currentUser.name}&currentScore=${this.data.currentUser.score}&opponentName=${this.data.opponent.name}&opponentScore=${this.data.opponent.score}&currentAvatar=${this.data.currentUser.avatar}&opponentAvatar=${this.data.opponent.avatar}`,
             });
           } else {
             this.setData({
@@ -289,12 +251,66 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId || 1;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      console.log(e)
+      //  userInfo
+    }
+
+    // 获取屏幕宽度
+    wx.getSystemInfo({
+      success: function (res) {
+        self.setData({
+          screenWidth: res.windowWidth
+        });
+      }
+    });
+
+    getPKInfo(userId).then(data => {
+      // console.log(data.meta.list);
+      this.setData({
+        selectChars: data.meta.list,
+        answerPath: data.meta.path,
+        opponent: {
+          name: data.other.name,
+          avatar: data.other.avatar_url,
+          score: 0,
+        }
+      });
+      setTimeout(() => {
+        console.log(this.data.selectChars);
+        this.data.selectChars.map((item) => {
+          idiomCharList.push({
+            char: item,
+            isFadeOut: false,
+          });
+        });
+
+        this.setData({
+          idiomCharList: idiomCharList,
+        })
+      }, 0);
+
+    });
     // 获取对手进度的定时器逻辑
-    let opponentTimer = setInterval(() => {
+    let opponentTimer;
+    clearInterval(opponentTimer);
+    opponentTimer = setInterval(() => {
       if (this.data.isEnd) {
         clearInterval(opponentTimer);
       } else if (this.data.isBegin) {
-        getOpponentPKInfo(this.data.userId).then((data) => {
+        getOpponentPKInfo(userId).then((data) => {
           this.deleteIdiom(data);
         });
       }
@@ -333,13 +349,29 @@ Page({
 
   // 更新自己成语信息
   postIdiom(cy) {
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId || 1;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      console.log(e)
+      //  userInfo
+    }
     // 更新本地分数
     const currentUser = this.data.currentUser;
     currentUser.score += 10;
     this.setData({
       currentUser,
     });
-    updatePKInfo(this.data.userId, cy).then(data => {
+    updatePKInfo(userId, cy).then(data => {
 
     });
   },

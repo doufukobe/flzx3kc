@@ -36,9 +36,9 @@ Page({
         wx.setStorage({
           key: "userInfo",
           data: res.userInfo
-        })
+        });
       }
-    })
+    });
   },
   // publish(e) {
   //   const self = this;

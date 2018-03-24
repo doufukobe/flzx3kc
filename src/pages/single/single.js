@@ -24,34 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (Promise) {
-      console.log('support');
-    }
-
-    const self = this;
-    let userId = 1;
-    try {
-      var value = wx.getStorageSync('userInfo')
-      if (value) {
-        console.log(value)
-        userId = value.userId;
-        console.log(value.userId)
-        self.setData({
-          userInfo: value
-        });
-      }
-    } catch (e) {
-      //  userInfo
-    }
-
-    // 不支持 async
-    getCurrentLevelInfo(userId).then((data) => {
-      console.log(data);
-      this.setData({
-        idiomInfo: data[0],
-        idiomList: data[1],
-      })
-    });
+    
   },
 
   /**
@@ -65,13 +38,28 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // 不支持 async
-    getCurrentLevelInfo(1).then((data) => {
-      console.log(data);
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId || 1;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      console.log(e)
+      //  userInfo
+    }
+
+    getCurrentLevelInfo(userId).then((data) => {
       this.setData({
         idiomInfo: data[0],
         idiomList: data[1],
-      });
+      })
     });
   },
 

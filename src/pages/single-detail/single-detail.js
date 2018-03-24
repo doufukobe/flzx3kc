@@ -139,7 +139,23 @@ Page({
       return;
     }
 
-    universalScore(1, -30, 'use_suggestions').then(data => {
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      //  userInfo
+    }
+
+    universalScore(userId, -30, 'use_suggestions').then(data => {
       if (data.status === 'success') {
         console.log(data);
         console.log(this.data.idiomDetail.answer.split(''));
@@ -156,8 +172,22 @@ Page({
   },
   // 跳过
   skip(e) {
-    // todo: 扣分
-    universalScore(1, -100, 'use_suggestions').then(data => {
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      //  userInfo
+    }
+    universalScore(userId, -100, 'use_suggestions').then(data => {
       if (data.status === 'success') {
         this.answerSuccess();
       } else {
@@ -166,7 +196,22 @@ Page({
     });
   },
   answerSuccess() {
-    answerIdiomSuccess(1, this.data.index).then(data => {
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      //  userInfo
+    }
+    answerIdiomSuccess(userId, this.data.index).then(data => {
       this.toastSuccess();
     });
   },
@@ -187,7 +232,7 @@ Page({
       var value = wx.getStorageSync('userInfo')
       if (value) {
         console.log(value)
-        userId = value.userId;
+        userId = value.userId || 1;
         console.log(value.userId)
         self.setData({
           userInfo: value

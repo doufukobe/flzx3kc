@@ -60,8 +60,10 @@ Page({
 
     currentUser.name = options.currentName;
     currentUser.score = options.currentScore;
+    currentUser.avatar = options.currentAvatar;
     opponent.name = options.opponentName;
     opponent.score = options.opponentScore;
+    opponent.avatar = options.opponentAvatar;
 
     if (options.currentScore < options.opponentScore) {
       isWin = false;

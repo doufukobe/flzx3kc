@@ -41,23 +41,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (Promise) {
-      console.log('support');
-      console.log(app.globalData.userInfo.userId);      
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        self.setData({
+          myUserInfo: value,
+        });
+        userId = value.userId;
+      }
+    } catch (e) {
+      //  userInfo
     }
 
-    const self = this;
-    wx.getStorage({
-      key: 'userInfo',
-      success: function (res) {
-        console.log(res.data)
-        self.setData({
-          myUserInfo: res.data
-        });
-      }
-    });
-
-    getRankList(myUserInfo.userId).then((data) => {
+    getRankList(userId).then((data) => {
       console.log(data);
       this.setData({
         userList: data.rank,

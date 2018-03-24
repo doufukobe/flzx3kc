@@ -11,9 +11,9 @@ Page({
     isMatched: false, // 是否匹配成功
     passedTime: 0, // 已等待时间
     currentUser: {
-      name: '葱头豆瓣酱',
+      name: '',
       record: 10,
-      avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+      avatar: ''
     },
     opponent: {
       name: '',
@@ -29,7 +29,6 @@ Page({
    try {
      var value = wx.getStorageSync('userInfo')
      if (value) {
-       console.log(value)
        self.setData({
          userInfo: value,
          currentUser: {
@@ -66,7 +65,6 @@ Page({
             isMatched: true,
             opponent: {
               name: data.other.name,
-              record: 10,
               avatar: data.other.avatar_url
             }
           });
