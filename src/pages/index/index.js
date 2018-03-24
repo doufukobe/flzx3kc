@@ -1,9 +1,4 @@
 //index.js
-//获取应用实例
-const app = getApp();
-
-console.log(app)
-
 Page({
   data: {
     logoSrc: '../../images/index/logo_img.png',
@@ -25,20 +20,27 @@ Page({
     });
   },
   onLoad: function (options) {
-    if (Promise) {
-      console.log('support');
-    }
-    const self = app;
     wx.getUserInfo({
       success: function (res) {
-        self.globalData.userInfo = res.userInfo;
-        console.log(self.globalData.userInfo.nickName);
+        res.userInfo.userId = '666666'
         wx.setStorage({
           key: "userInfo",
           data: res.userInfo
         });
+
+        wx.showModal({
+          title: 'getUserInfo success',
+          content: JSON.stringify(res),
+        });
+      },
+      fail(e) {
+        wx.showModal({
+          title: 'getUserInfo error',
+          content: JSON.stringify(e),
+        });
       }
     });
+   
   },
   // publish(e) {
   //   const self = this;

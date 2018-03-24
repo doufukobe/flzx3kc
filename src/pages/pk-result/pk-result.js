@@ -1,4 +1,6 @@
 // pages/pk-result/pk-result.js
+import { universalScore } from '../../utils/api.js';
+
 Page({
 
   /**
@@ -18,6 +20,7 @@ Page({
       avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
     },
     winTip: '金币+10',
+    winAdward: 10,
     pkTip: 'VS',
     share: '炫耀一下',
     nextGame: '再来一局',
@@ -36,24 +39,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // const self = this;
-    // try {
-    //   var value = wx.getStorageSync('userInfo')
-    //   if (value) {
-    //     console.log(value)
-    //     self.setData({
-    //       userInfo: value,
-    //       currentUser: {
-    //         name: value.nickName,
-    //         score: 0,
-    //         record: 5,
-    //         avatar: value.avatar,
-    //       },
-    //     });
-    //   }
-    // } catch (e) {
-    //   //  userInfo
-    // }
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId;
+      }
+    } catch (e) {
+      console.log(e)
+      //  userInfo
+    }
+
     const currentUser = this.data.currentUser;
     const opponent = this.data.opponent;
     let isWin = true;
@@ -74,7 +71,10 @@ Page({
       opponent,
       isWin,
     });
-  
+
+    universalScore(userId, this.data.winAdward, 'win_pk').then(data => {
+      
+    });
   },
 
   /**

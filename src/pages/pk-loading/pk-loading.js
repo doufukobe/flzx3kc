@@ -1,5 +1,5 @@
 // pages/pk-loading/pk-loading.js
-import { getPKInfo, updatePKInfo, getOpponentPKInfo, } from '../../utils/api.js';
+import { getPKInfo } from '../../utils/api.js';
 
 Page({
 
@@ -19,7 +19,8 @@ Page({
       name: '',
       record: 0,
       avatar: ''
-    }
+    },
+    timer: null,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -48,19 +49,16 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    let timer = setInterval(() => {
+    let seekOpponentTimer = setInterval(() => {
       let passedTime = this.data.passedTime;
       passedTime += 1;
       this.setData({
         passedTime,
       });
       const userInfo = this.data.userInfo;
-      console.log('pk userinfo')
-      console.log(userInfo)
-      getPKInfo(1).then((data) => {
-        console.log(data);
+      getPKInfo(userInfo.userId).then((data) => {
         if (data.game_status === 1) {
-          clearInterval(timer);
+          clearInterval(seekOpponentTimer);
           this.setData({
             isMatched: true,
             opponent: {
@@ -69,14 +67,22 @@ Page({
             }
           });
 
-          setTimeout(() => {
+          let timer = setTimeout(() => {
             wx.redirectTo({
               url: '../pk/pk',
             });
-          }, 2000);
+          }, 3000);
+
+          this.setData({
+            timer,
+          });
         }
       });
     }, 1000);
+
+    this.setData({
+      seekOpponentTimer,
+    })
   },
 
   /**
@@ -90,14 +96,16 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+    clearTimeout(this.data.timer);
+    clearInterval(this.data.seekOpponentTimer);    
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+    clearTimeout(this.data.timer);  
+    clearInterval(this.data.seekOpponentTimer);
   },
 
   /**

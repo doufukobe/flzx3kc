@@ -213,6 +213,10 @@ Page({
     }
     answerIdiomSuccess(userId, this.data.index).then(data => {
       this.toastSuccess();
+
+      universalScore(userId, 10, 'answer_correctly').then(data => {
+
+      });
     });
   },
 
@@ -232,7 +236,7 @@ Page({
       var value = wx.getStorageSync('userInfo')
       if (value) {
         console.log(value)
-        userId = value.userId || 1;
+        userId = value.userId;
         console.log(value.userId)
         self.setData({
           userInfo: value

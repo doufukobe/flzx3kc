@@ -44,15 +44,13 @@ Page({
       var value = wx.getStorageSync('userInfo')
       if (value) {
         console.log(value)
-        userId = value.userId || 1;
-        console.log(value.userId)
+        userId = value.userId;
         self.setData({
           userInfo: value
         });
       }
     } catch (e) {
       console.log(e)
-      //  userInfo
     }
 
     getCurrentLevelInfo(userId).then((data) => {

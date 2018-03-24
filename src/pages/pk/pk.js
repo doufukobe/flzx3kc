@@ -46,6 +46,10 @@ Page({
     isEnd: false, // 标识比赛是否结束
     leftTimePercentage: '100%',
     userId: '',
+
+    timer: null, // 比赛开始倒计时
+    leftTimer: null, // 比赛剩余时间倒计时
+    opponentTimer: null, // 获取对手进度倒计时
   },
 
   // 事件处理函数
@@ -187,10 +191,76 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+   
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value,
+          currentUser: {
+            name: value.nickName,
+            score: 0,
+            record: 5,
+            avatar: value.avatarUrl,
+          },
+        });
+      }
+    } catch (e) {
+      console.log(e)
+      //  userInfo
+    }
+
+    // 获取屏幕宽度，原本交互是滑动消除，所以需要获取屏幕宽度，并计算当前所在点。
+    wx.getSystemInfo({
+      success: function (res) {
+        self.setData({
+          screenWidth: res.windowWidth
+        });
+      }
+    });
+
+    getPKInfo(userId).then(data => {
+      console.log(data);
+      this.setData({
+        selectChars: data.meta.list,
+        answerPath: data.meta.path,
+        opponent: {
+          name: data.other.name,
+          avatar: data.other.avatar_url,
+          score: 0,
+        }
+      });
+
+      const idiomCharList = [];
+     
+      this.data.selectChars.map((item) => {
+        idiomCharList.push({
+          char: item,
+          isFadeOut: false,
+        });
+      });
+
+      this.setData({
+        idiomCharList: idiomCharList,
+      });
+    });
+
+    // 定时器相关
     let left = 2; // 2s 倒计时
     let leftTimer;
 
-    // 倒计时的定时器逻辑...
+    // 比赛开始倒计时的定时器逻辑...
     let timer = setInterval(() => {
       if (left > 0) {
         this.setData({
@@ -204,6 +274,7 @@ Page({
         });
         clearInterval(timer);
 
+        // 比赛倒计时的定时器逻辑...
         leftTimer = setInterval(() => {
           const number = parseInt(this.data.leftTimePercentage.slice(0, -1), 10);
           const d = number - 1.67;
@@ -242,70 +313,21 @@ Page({
             });
           }
         }, 1000);
+
+        this.setData({
+          leftTimer: leftTimer
+        });
       }
       left -= 1;
     }, 1000);
-  },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    const self = this;
-    let userId = 1;
-    try {
-      var value = wx.getStorageSync('userInfo')
-      if (value) {
-        console.log(value)
-        userId = value.userId || 1;
-        console.log(value.userId)
-        self.setData({
-          userInfo: value
-        });
-      }
-    } catch (e) {
-      console.log(e)
-      //  userInfo
-    }
-
-    // 获取屏幕宽度
-    wx.getSystemInfo({
-      success: function (res) {
-        self.setData({
-          screenWidth: res.windowWidth
-        });
-      }
+    this.setData({
+      timer: timer
     });
 
-    getPKInfo(userId).then(data => {
-      // console.log(data.meta.list);
-      this.setData({
-        selectChars: data.meta.list,
-        answerPath: data.meta.path,
-        opponent: {
-          name: data.other.name,
-          avatar: data.other.avatar_url,
-          score: 0,
-        }
-      });
-      setTimeout(() => {
-        console.log(this.data.selectChars);
-        this.data.selectChars.map((item) => {
-          idiomCharList.push({
-            char: item,
-            isFadeOut: false,
-          });
-        });
-
-        this.setData({
-          idiomCharList: idiomCharList,
-        })
-      }, 0);
-
-    });
     // 获取对手进度的定时器逻辑
     let opponentTimer;
-    clearInterval(opponentTimer);
+
     opponentTimer = setInterval(() => {
       if (this.data.isEnd) {
         clearInterval(opponentTimer);
@@ -315,11 +337,16 @@ Page({
         });
       }
     }, 1000);
+
+    this.setData({
+      opponentTimer: opponentTimer
+    });
   },
   // 删除成语，在获取对手进度后使用，主要是增加 fadeOut 类
   deleteIdiom(idiomList) {
     const opponentSelect = [];
-    
+    console.info('!!!!');
+    console.info(idiomList);
     idiomList.forEach((idiom) => {
       if (this.data.answerPath[idiom]) {
         const charPathList = this.data.answerPath[idiom];
@@ -380,14 +407,21 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+    // 清除定时器
+    console.log('on hide');
+    clearInterval(this.data.timer);
+    clearInterval(this.data.leftTimer);
+    clearInterval(this.data.opponentTimer);
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+    console.log('on unload');
+    clearInterval(this.data.timer);
+    clearInterval(this.data.leftTimer);
+    clearInterval(this.data.opponentTimer);
   },
 
   /**

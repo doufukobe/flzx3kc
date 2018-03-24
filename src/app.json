@@ -6,7 +6,6 @@
     "pages/pk/pk",
     "pages/pk-loading/pk-loading",    
     "pages/rank/rank",
-    "pages/logs/logs",
     "pages/pk-result/pk-result",
     "pages/game-over/game-over"
   ],
