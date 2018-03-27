@@ -6,8 +6,8 @@
     <image src="{{idiomDetail.picture_url}}" class="idiom-img"></image>
   </view>
   <view class="operation-wrapper">
-    <view class="operation-item operation-prompt" bindtap="prompt">提示 ( 30 )</view>
-    <view class="operation-item operation-skip" bindtap="skip">跳過 ( 100 )</view>
+    <view class="operation-item operation-prompt" bindtap="prompt">提示 30</view>
+    <view class="operation-item operation-skip" bindtap="skip">跳過 100</view>
   </view>
   <view class="idiom-input-fields" bindtap="handleDelete">
     <view class="idiom-character" wx:for="{{inputIdiom}}" data-index="{{index}}">{{item}}</view>
@@ -20,7 +20,7 @@
       </view>
     </view>
   </view>
-  <view class="operation-coin" style="flex-direction:row;">
+  <view class="operation-coin">
     <image class="coin" src="{{icon}}"></image>
     <view class="coin-num">{{coinCount}}</view>
   </view>

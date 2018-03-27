@@ -24,7 +24,7 @@
 }
 
 .pk-header .score {
-  width: 100rpx;
+  width: 250rpx;
   font-size: 48rpx;
   color: #231916;
 }

@@ -59,12 +59,12 @@
 .operation-coin {
   width: 160rpx;
   height: 50rpx;
+  position: absolute;
+  bottom: 10rpx;
+  right: 10rpx;
   display: flex;
-  float: right;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 30rpx;
-  margin-right: 30rpx;
+  justify-content: flex-end;
 }
 
 .coin {

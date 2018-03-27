@@ -82,7 +82,7 @@ Page({
 
     this.setData({
       seekOpponentTimer,
-    })
+    });
   },
 
   /**

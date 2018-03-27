@@ -11,5 +11,5 @@
 
 view {
   font-family: "Songti TC", "STSongti-TC-Bold";
-  /* font-weight: 100; */
+  font-weight: bolder; 
 }

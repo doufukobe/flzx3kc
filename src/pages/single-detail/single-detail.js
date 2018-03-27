@@ -31,7 +31,12 @@ Page({
   // 事件处理函数
   handleTap(e) {
     const index = e.target.dataset.index;
-    this.handleAdd(index);
+
+    // 如果该字符已经被选入，则直接返回
+
+    if (this.data.hideIndex.indexOf(index) === -1) {
+      this.handleAdd(index);
+    }
   },
   goToNext(levelId) {
     const nextIndex = ~~this.data.index + 1;
@@ -50,8 +55,6 @@ Page({
     this.setData({
       isSuccess: !this.data.isSuccess,
     });
-
-    // 闯关成功接口
   },
   toastError(errorMsg) {
     this.setData({
@@ -68,17 +71,34 @@ Page({
     }, 1500);
   },
   handleAdd(index) {
-    const hideIndex = this.data.hideIndex;
-    const currentChar = this.data.idiomDetail.words[index];
-
     if (typeof index === 'undefined') {
       return;
     }
 
-    // 如果已经插入，则返回
+    const hideIndex = this.data.hideIndex;
+    const currentChar = this.data.idiomDetail.words[index];
+    const inputIdiom = this.data.inputIdiom;
+
+    // 如果已经插入，取消选择该字，
     if (hideIndex.indexOf(index) !== -1) {
+      // return;
+      const idx = hideIndex.indexOf(index);
+      console.log('exist:' + idx);
+      hideIndex[idx] = -1;
+      inputIdiom[idx] = '';
+
+      this.setData({
+        hideIndex,
+        inputIdiom
+      });
+
+      const nextCorrectChar = this.data.idiomDetail.answer.split('')[idx];
+      const newIndex = this.data.idiomDetail.words.indexOf(nextCorrectChar);
+      this.handleAdd(newIndex);
       return;
     }
+
+
 
     // 获取插入前字数
     const beforeInsertNum = this.data.inputIdiom.filter(item => item !== '').length;
@@ -88,17 +108,19 @@ Page({
       return;
     }
 
-    const inputIdiom = this.data.inputIdiom;
+
 
     // 将当前词插入到填入框中
     for (let i = 0; i < inputIdiom.length; i++) {
       if (inputIdiom[i] === '') {
         inputIdiom[i] = currentChar;
+        hideIndex[i] = index;
         break;
       }
     }
     this.setData({
       inputIdiom,
+      hideIndex,
     });
 
     // 获取当前填入字数
@@ -112,11 +134,11 @@ Page({
     }
 
     // hideIndex.push(index);
-    hideIndex[afterInsertNum - 1] = index;
-    this.setData({
-      hideIndex
-    });
-    console.log(this.data.hideIndex);
+    // hideIndex[afterInsertNum - 1] = index;
+    // this.setData({
+    //   hideIndex
+    // });
+    // console.log(this.data.hideIndex);
   },
   handleDelete(e) {
     const index = e.target.dataset.index;
@@ -133,20 +155,31 @@ Page({
   },
   // 提示一个字
   prompt(e) {
+    // 获取当前输入的长度
     const currentValidLength = this.data.inputIdiom.filter(item => item !== '').length;
     if (currentValidLength === 4) {
       this.toastError('先删除错误答案');
       return;
     }
 
+    // 获取需要提示的字所在成语位置
+    let nextIndex = -1;
+
+    for (let i = 0; i < this.data.hideIndex.length; i++) {
+      if (this.data.hideIndex[i] === -1) {
+        nextIndex = i;
+        break;
+      }
+    }
+    
+    console.log('position:' + nextIndex);
+
     const self = this;
     let userId = 1;
     try {
       var value = wx.getStorageSync('userInfo')
       if (value) {
-        console.log(value)
         userId = value.userId;
-        console.log(value.userId)
         self.setData({
           userInfo: value
         });
@@ -157,13 +190,11 @@ Page({
 
     universalScore(userId, -30, 'use_suggestions').then(data => {
       if (data.status === 'success') {
-        console.log(data);
-        console.log(this.data.idiomDetail.answer.split(''));
-        console.log(this.data.inputIdiom.length);
-        const nextCorrectChar = this.data.idiomDetail.answer.split('')[currentValidLength];
-        console.log(nextCorrectChar);
-
+        const nextCorrectChar = this.data.idiomDetail.answer.split('')[nextIndex];
+        console.log('answer is' + this.data.idiomDetail.answer);
+        console.log('next char:' + nextCorrectChar);
         const index = this.data.idiomDetail.words.indexOf(nextCorrectChar);
+        console.log('handle add index:' + index);
         this.handleAdd(index);
       } else {
         this.toastError(data.message);

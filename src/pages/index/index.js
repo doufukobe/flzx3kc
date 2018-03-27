@@ -28,10 +28,10 @@ Page({
           data: res.userInfo
         });
 
-        wx.showModal({
-          title: 'getUserInfo success',
-          content: JSON.stringify(res),
-        });
+        // wx.showModal({
+        //   title: 'getUserInfo success',
+        //   content: JSON.stringify(res),
+        // });
       },
       fail(e) {
         wx.showModal({

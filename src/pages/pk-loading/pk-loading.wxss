@@ -124,6 +124,8 @@ page {
 
 .pk-user .pk-user-name {
   font-size: 28rpx;
+  height: 40rpx;
+  line-height: 40rpx;
   color: #231916;
   margin-bottom: 6rpx;
 }
