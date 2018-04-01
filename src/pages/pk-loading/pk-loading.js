@@ -1,5 +1,5 @@
 // pages/pk-loading/pk-loading.js
-import { getPKInfo, updatePKInfo, getOpponentPKInfo, } from '../../utils/api.js';
+import { getPKInfo } from '../../utils/api.js';
 
 Page({
 
@@ -11,15 +11,16 @@ Page({
     isMatched: false, // 是否匹配成功
     passedTime: 0, // 已等待时间
     currentUser: {
-      name: '葱头豆瓣酱',
+      name: '',
       record: 10,
-      avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+      avatar: ''
     },
     opponent: {
       name: '',
       record: 0,
       avatar: ''
-    }
+    },
+    timer: null,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -29,7 +30,6 @@ Page({
    try {
      var value = wx.getStorageSync('userInfo')
      if (value) {
-       console.log(value)
        self.setData({
          userInfo: value,
          currentUser: {
@@ -49,36 +49,40 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    let timer = setInterval(() => {
+    let seekOpponentTimer = setInterval(() => {
       let passedTime = this.data.passedTime;
       passedTime += 1;
       this.setData({
         passedTime,
       });
       const userInfo = this.data.userInfo;
-      console.log('pk userinfo')
-      console.log(userInfo)
-      getPKInfo(1).then((data) => {
-        console.log(data);
+      getPKInfo(userInfo.userId).then((data) => {
         if (data.game_status === 1) {
-          clearInterval(timer);
+          clearInterval(seekOpponentTimer);
           this.setData({
             isMatched: true,
             opponent: {
               name: data.other.name,
-              record: 10,
               avatar: data.other.avatar_url
             }
           });
 
-          setTimeout(() => {
+          let timer = setTimeout(() => {
             wx.redirectTo({
               url: '../pk/pk',
             });
-          }, 2000);
+          }, 3000);
+
+          this.setData({
+            timer,
+          });
         }
       });
     }, 1000);
+
+    this.setData({
+      seekOpponentTimer,
+    });
   },
 
   /**
@@ -92,14 +96,16 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+    clearTimeout(this.data.timer);
+    clearInterval(this.data.seekOpponentTimer);    
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+    clearTimeout(this.data.timer);  
+    clearInterval(this.data.seekOpponentTimer);
   },
 
   /**

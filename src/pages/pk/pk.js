@@ -10,16 +10,16 @@ Page({
     userInfo: {},
     currentIndex: -1,
     currentUser: {
-      name: '葱头豆瓣酱',
+      name: '',
       record: 10,
       score: 0,
-      avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+      avatar: ''
     },
     opponent: {
       name: '',
       record: 10,
       score: 0,
-      avatar: 'https://sf3-ttcdn-tos.pstatp.com/img/game-files/16393a4b709356457ad45282f6d1e873.jpeg~110x110.jpeg'
+      avatar: ''
     },
     selectChars: [
       '連', '膽', '夸', '話', '費', '級', '抗', '為',
@@ -45,7 +45,11 @@ Page({
     isBegin: false, // 标识比赛是否开始
     isEnd: false, // 标识比赛是否结束
     leftTimePercentage: '100%',
-    userId: 1,
+    userId: '',
+
+    timer: null, // 比赛开始倒计时
+    leftTimer: null, // 比赛剩余时间倒计时
+    opponentTimer: null, // 获取对手进度倒计时
   },
 
   // 事件处理函数
@@ -180,35 +184,54 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+   
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
     const self = this;
-    const idiomCharList = this.data.idiomCharList;
+    let userId = 1;
     try {
       var value = wx.getStorageSync('userInfo')
       if (value) {
         console.log(value)
+        userId = value.userId;
+        console.log(value.userId)
         self.setData({
           userInfo: value,
           currentUser: {
             name: value.nickName,
             score: 0,
+            record: 5,
             avatar: value.avatarUrl,
           },
         });
       }
     } catch (e) {
+      console.log(e)
       //  userInfo
     }
-    // 获取屏幕宽度
+
+    // 获取屏幕宽度，原本交互是滑动消除，所以需要获取屏幕宽度，并计算当前所在点。
     wx.getSystemInfo({
       success: function (res) {
         self.setData({
           screenWidth: res.windowWidth
         });
       }
-    })
+    });
 
-    getPKInfo(this.data.userId).then(data => {
-      // console.log(data.meta.list);
+    getPKInfo(userId).then(data => {
+      console.log(data);
       this.setData({
         selectChars: data.meta.list,
         answerPath: data.meta.path,
@@ -216,36 +239,28 @@ Page({
           name: data.other.name,
           avatar: data.other.avatar_url,
           score: 0,
-        }     
+        }
       });
-      setTimeout(() => {
-        console.log(this.data.selectChars);
-        
-        this.data.selectChars.map((item) => {
-          idiomCharList.push({
-            char: item,
-            isFadeOut: false,
-          });
-        });
 
-        this.setData({
-          idiomCharList: idiomCharList,
-        })
-      }, 0);
-      
+      const idiomCharList = [];
+     
+      this.data.selectChars.map((item) => {
+        idiomCharList.push({
+          char: item,
+          isFadeOut: false,
+        });
+      });
+
+      this.setData({
+        idiomCharList: idiomCharList,
+      });
     });
 
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
+    // 定时器相关
     let left = 2; // 2s 倒计时
     let leftTimer;
 
-    // 倒计时的定时器逻辑...
+    // 比赛开始倒计时的定时器逻辑...
     let timer = setInterval(() => {
       if (left > 0) {
         this.setData({
@@ -259,20 +274,38 @@ Page({
         });
         clearInterval(timer);
 
+        // 比赛倒计时的定时器逻辑...
         leftTimer = setInterval(() => {
           const number = parseInt(this.data.leftTimePercentage.slice(0, -1), 10);
-          const d = number - 16.7;
+          const d = number - 1.67;
           if (d <= 0) {
             clearInterval(leftTimer);
             this.setData({
               isEnd: true
             });
             // 上报游戏结束
-            updatePKEnding(this.data.userId);
+
+            const self = this;
+            let userId = 1;
+            try {
+              var value = wx.getStorageSync('userInfo')
+              if (value) {
+                console.log(value)
+                userId = value.userId || 1;
+                console.log(value.userId)
+                self.setData({
+                  userInfo: value
+                });
+              }
+            } catch (e) {
+              console.log(e)
+              //  userInfo
+            }
+            updatePKEnding(userId);
 
             // 跳转pk结果
             wx.redirectTo({
-              url: `../pk-result/pk-result?currentName=${this.data.currentUser.name}&currentScore=${this.data.currentUser.score}&opponentName=${this.data.opponent.name}&opponentScore=${this.data.opponent.score}`,
+              url: `../pk-result/pk-result?currentName=${this.data.currentUser.name}&currentScore=${this.data.currentUser.score}&opponentName=${this.data.opponent.name}&opponentScore=${this.data.opponent.score}&currentAvatar=${this.data.currentUser.avatar}&opponentAvatar=${this.data.opponent.avatar}`,
             });
           } else {
             this.setData({
@@ -280,30 +313,40 @@ Page({
             });
           }
         }, 1000);
+
+        this.setData({
+          leftTimer: leftTimer
+        });
       }
       left -= 1;
     }, 1000);
-  },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
+    this.setData({
+      timer: timer
+    });
+
     // 获取对手进度的定时器逻辑
-    let opponentTimer = setInterval(() => {
+    let opponentTimer;
+
+    opponentTimer = setInterval(() => {
       if (this.data.isEnd) {
         clearInterval(opponentTimer);
       } else if (this.data.isBegin) {
-        getOpponentPKInfo(this.data.userId).then((data) => {
+        getOpponentPKInfo(userId).then((data) => {
           this.deleteIdiom(data);
         });
       }
     }, 1000);
+
+    this.setData({
+      opponentTimer: opponentTimer
+    });
   },
   // 删除成语，在获取对手进度后使用，主要是增加 fadeOut 类
   deleteIdiom(idiomList) {
     const opponentSelect = [];
-    
+    console.info('!!!!');
+    console.info(idiomList);
     idiomList.forEach((idiom) => {
       if (this.data.answerPath[idiom]) {
         const charPathList = this.data.answerPath[idiom];
@@ -333,13 +376,29 @@ Page({
 
   // 更新自己成语信息
   postIdiom(cy) {
+    const self = this;
+    let userId = 1;
+    try {
+      var value = wx.getStorageSync('userInfo')
+      if (value) {
+        console.log(value)
+        userId = value.userId || 1;
+        console.log(value.userId)
+        self.setData({
+          userInfo: value
+        });
+      }
+    } catch (e) {
+      console.log(e)
+      //  userInfo
+    }
     // 更新本地分数
     const currentUser = this.data.currentUser;
     currentUser.score += 10;
     this.setData({
       currentUser,
     });
-    updatePKInfo(this.data.userId, cy).then(data => {
+    updatePKInfo(userId, cy).then(data => {
 
     });
   },
@@ -348,14 +407,21 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+    // 清除定时器
+    console.log('on hide');
+    clearInterval(this.data.timer);
+    clearInterval(this.data.leftTimer);
+    clearInterval(this.data.opponentTimer);
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+    console.log('on unload');
+    clearInterval(this.data.timer);
+    clearInterval(this.data.leftTimer);
+    clearInterval(this.data.opponentTimer);
   },
 
   /**

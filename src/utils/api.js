@@ -166,9 +166,11 @@ const getOpponentPKInfo = (userId) => {
         user_id: userId,
       },
       success: (res) => {
-        resolve(res.data.data);
-        console.log(res.data.data);
-        // resolve(['打入冷宫']);
+        if (res.data.status === 'success') {
+          resolve(res.data.data);
+        } else {
+          resolve([]);
+        }
       },
     });
   });

@@ -20,10 +20,11 @@
   border-radius: 50%;
   position: relative;
   z-index: 1;
+  background-color: #fff;
 }
 
 .pk-header .score {
-  width: 100rpx;
+  width: 250rpx;
   font-size: 48rpx;
   color: #231916;
 }
